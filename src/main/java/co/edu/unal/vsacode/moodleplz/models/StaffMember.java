@@ -5,21 +5,24 @@ import org.springframework.data.annotation.Id;
 import java.util.List;
 
 public class StaffMember {
+
     @Id
     private String id;
-
-    private String idCard;
+    private String document;
     private String email;
     private String password;
     private String name;
     private String lastName;
     private List<Skill> skills;
-    private List<Knowledge> knowledges;
+    private List<Knowledge> knowledge;
     private List<Group> groups;
 
+    public StaffMember(){
 
-    public StaffMember(String idCard, String email, String password, String name, String lastName){
-        this.idCard = idCard;
+    }
+
+    public StaffMember(String document, String email, String password, String name, String lastName){
+        this.document = document;
         this.email = email;
         this.password = password;
         this.name = name;
@@ -35,12 +38,12 @@ public class StaffMember {
         this.groups = groups;
     }
 
-    public String getIdCard() {
-        return idCard;
+    public String getDocument() {
+        return document;
     }
 
-    public void setIdCard(String idCard) {
-        this.idCard = idCard;
+    public void setDocument(String document) {
+        this.document = document;
     }
 
     public String getEmail() {
@@ -83,19 +86,27 @@ public class StaffMember {
         this.skills = skills;
     }
 
-    public List<Knowledge> getKnowledges() {
-        return knowledges;
+    public List<Knowledge> getKnowledge() {
+        return knowledge;
     }
 
-    public void setKnowledges(List<Knowledge> knowledges) {
-        this.knowledges = knowledges;
+    public void setKnowledge(List<Knowledge> knowledge) {
+        this.knowledge = knowledge;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
     public String toString(){
         return String.format(
                 "Customer[id=%s, Identification Card='%s', Name='%s', lastName='%s', Email='%s']",
-                id, idCard, name,lastName, email);
+                id, document, name,lastName, email);
     }
 
 }
