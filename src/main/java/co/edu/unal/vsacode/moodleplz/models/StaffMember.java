@@ -21,10 +21,8 @@ public class StaffMember {
         this.password = password;
         this.name = name;
         this.lastName = lastName;
-        this.skills = skills;
-        this.knowledges = knowledges;
-        this.groups = groups;
     }
+
 
     public List<Group> getGroups() {
         return groups;
@@ -96,6 +94,13 @@ public class StaffMember {
 
     public void setKnowledges(List<Knowledge> knowledges) {
         this.knowledges = knowledges;
+    }
+
+    @Override
+    public String toString(){
+        return String.format(
+                "Customer[id=%s, Identification Card='%s', Name='%s', lastName='%s', Email='%s']",
+                id, idCard, name,lastName, email);
     }
 
 }
