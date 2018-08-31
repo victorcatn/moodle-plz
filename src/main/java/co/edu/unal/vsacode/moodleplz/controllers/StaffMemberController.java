@@ -1,7 +1,7 @@
 package co.edu.unal.vsacode.moodleplz.controllers;
 
 import co.edu.unal.vsacode.moodleplz.models.StaffMember;
-import co.edu.unal.vsacode.moodleplz.services.StaffMemberServices;
+import co.edu.unal.vsacode.moodleplz.services.StaffMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.*;
 public class StaffMemberController {
 
     @Autowired
-    private StaffMemberServices staffServices;
+    private StaffMemberService staffServices;
 
-    @GetMapping(value="/{IdCard}/{Email}/{Name}/{LastName}")
+    @GetMapping(value="/register-staff-member/{IdCard}-{Email}-{password}-{Name}-{LastName}")
     public String SaveStaffMember(@PathVariable("IdCard") String idCard, @PathVariable("Email") String email,
-                               @PathVariable("Name") String name, @PathVariable("LastName") String lastName){
+                               @PathVariable("Name") String name, @PathVariable("LastName") String lastName,
+                                  @PathVariable("password") String password){
 
-        StaffMember newStaffMember = new StaffMember(idCard, email, name, lastName);
+        StaffMember newStaffMember = new StaffMember(idCard, email, password,name, lastName);
         staffServices.saveStaffMemberOnMongoDB(newStaffMember);
         return(newStaffMember.toString());
     }

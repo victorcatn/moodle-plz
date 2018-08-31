@@ -17,17 +17,6 @@ public class StaffMember {
     private List<Knowledge> knowledges;
     private List<Group> groups;
 
-    public StaffMember(String idCard, String email, String password, String name, String lastName,
-                       List<Skill> skills, List<Knowledge> knowledges, List<Group> groups) {
-        this.idCard = idCard;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.lastName = lastName;
-        this.skills = skills;
-        this.knowledges = knowledges;
-        this.groups = groups;
-    }
 
     public StaffMember(String idCard, String email, String password, String name, String lastName){
         this.idCard = idCard;
@@ -37,12 +26,6 @@ public class StaffMember {
         this.lastName = lastName;
     }
 
-    public StaffMember(String idCard, String email, String name, String lastName){
-        this.idCard = idCard;
-        this.email = email;
-        this.name = name;
-        this.lastName = lastName;
-    }
 
     public List<Group> getGroups() {
         return groups;
