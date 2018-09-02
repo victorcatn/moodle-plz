@@ -50,6 +50,7 @@ public class ProjectController {
      */
     @PutMapping("/{id}")
     Project editProject(@RequestBody Project newProject, @PathVariable String id) {
+        newProject.setId(id);
         return projectService.saveProject(newProject);
     }
 

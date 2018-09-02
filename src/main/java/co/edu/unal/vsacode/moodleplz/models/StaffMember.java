@@ -15,6 +15,7 @@ public class StaffMember {
     private String password;
     private String name;
     private String lastName;
+    private String state;
     private List<Skill> skills;
     private List<Knowledge> knowledge;
     private List<Group> groups;
@@ -31,6 +32,13 @@ public class StaffMember {
         this.lastName = lastName;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public List<Group> getGroups() {
         return groups;
@@ -110,5 +118,6 @@ public class StaffMember {
                 "Customer[id=%s, Identification Card='%s', Name='%s', lastName='%s', Email='%s']",
                 id, document, name,lastName, email);
     }
+
 
 }
