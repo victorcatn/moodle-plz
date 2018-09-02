@@ -23,4 +23,15 @@ public class SkillController {
     public Skill saveSkill(@RequestBody Skill newSkill){
         return skillService.saveSkill(newSkill);
     }
+
+    @PutMapping("/{id}")
+    public Skill updateSkill(@PathVariable (name = "id") String id, @RequestBody Skill newSkill){
+        newSkill.setId(id);
+        return skillService.updateSkill(newSkill);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteSkill(@PathVariable (name = "id") String id){
+        skillService.deleteSkill(id);
+    }
 }
