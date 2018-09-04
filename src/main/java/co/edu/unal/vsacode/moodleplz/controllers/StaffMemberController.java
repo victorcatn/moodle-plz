@@ -29,7 +29,7 @@ public class StaffMemberController {
     }
 
     @DeleteMapping("/{id}")
-    void deleteEmployee(@PathVariable String id) {
+    void deleteStaffMember(@PathVariable String id) {
         StaffMember staffMember = new StaffMember();
         staffMember.setId(id);
         staffMemberService.deleteStaffMember(staffMember);

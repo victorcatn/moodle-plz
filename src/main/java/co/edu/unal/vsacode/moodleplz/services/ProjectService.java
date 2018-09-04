@@ -36,11 +36,11 @@ public class ProjectService {
 
     /**
      * Search and show the projects with the code project provided
-     * @param code code of the project provided for the user
+     * @param name code of the project provided for the user
      * @return a list with all the projects which the code matches with the code provided
      */
-    public List<Project> getProjectbyCode(String code){
-        return repository.findByCode(code);
+    public Optional<Project> getProjectbyName(String name){
+        return repository.findByName(name);
     }
 
     /**

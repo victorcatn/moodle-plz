@@ -10,7 +10,6 @@ import java.util.List;
 public class Project {
     @Id
     private String id;
-    private String code;
     private String name;
 
     private Date startDate;
@@ -26,9 +25,8 @@ public class Project {
     }
 
 
-    public Project(String code, String name, Date startDate,List<Skill> neededSkill, List<Knowledge> neededKnowledge) {
+    public Project(String name, Date startDate, List<Skill> neededSkill, List<Knowledge> neededKnowledge) {
         this.startDate = startDate;
-        this.code = code;
         this.name = name;
         this.neededSkill = neededSkill;
         this.neededKnowledge = neededKnowledge;
@@ -40,14 +38,6 @@ public class Project {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getName() {
@@ -94,17 +84,17 @@ public class Project {
         return startDate;
     }
 
+
     @Override
     public String toString() {
         return "Project{" +
                 "id='" + id + '\'' +
-                ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
                 ", neededSkill=" + neededSkill +
                 ", neededKnowledge=" + neededKnowledge +
                 ", assignedGroup=" + assignedGroup +
                 '}';
     }
-
-
 }
