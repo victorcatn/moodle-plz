@@ -19,15 +19,25 @@ public class StaffMemberService {
         return repository.findAll();
     }
 
-    public Optional<StaffMember> getStaffMember(String id) {
-        return repository.findById(id);
+    public StaffMember getStaffMember(String id) {
+        Optional<StaffMember> result = repository.findById(id);
+        return result.orElse(null);
     }
 
     public StaffMember saveStaffMember(StaffMember staffMember){
         return repository.save(staffMember);
     }
 
-    public void deleteStaffMember(StaffMember staffMember){
+    public StaffMember updateStaffMember(StaffMember staffMember, String id){
+        if(!repository.findById(id).isPresent()){
+            return null;
+        }
+        return repository.save(staffMember);
+    }
+
+    public void deleteStaffMember(String id){
+        StaffMember staffMember = new StaffMember();
+        staffMember.setId(id);
         repository.delete(staffMember);
     }
 

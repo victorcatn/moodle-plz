@@ -37,10 +37,4 @@ public class StaffMemberController {
     void deleteEmployee(@PathVariable String id) {
         staffMemberService.deleteStaffMember(id);
     }
-    @DeleteMapping("/{id}")
-    void deleteEmployee(@PathVariable String id) {
-        StaffMember staffMember = new StaffMember();
-        staffMember.setId(id);
-        staffMemberService.deleteStaffMember(staffMember);
-    }
 }
