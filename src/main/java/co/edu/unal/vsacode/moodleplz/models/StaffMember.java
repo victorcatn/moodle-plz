@@ -38,6 +38,10 @@ public class StaffMember {
         this.groups = groups;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getDocument() {
         return document;
     }
@@ -96,10 +100,6 @@ public class StaffMember {
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     @Override
