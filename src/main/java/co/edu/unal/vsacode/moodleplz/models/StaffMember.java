@@ -16,6 +16,7 @@ public class StaffMember {
     private String name;
     private String lastName;
     private String state;
+    private Boolean isHRM;
     private List<Skill> skills;
     private List<Knowledge> knowledge;
     private List<Group> groups;
@@ -110,6 +111,14 @@ public class StaffMember {
 
     public String getId() {
         return id;
+    }
+
+    public Boolean getHRM() {
+        return isHRM;
+    }
+
+    public void setHRM(Boolean HRM) {
+        isHRM = HRM;
     }
 
     @Override
