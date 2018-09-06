@@ -20,6 +20,8 @@ public class Project {
 
     private Group assignedGroup;
 
+    //private int staffNeeded; //TODO
+
     public Project(){
 
     }
