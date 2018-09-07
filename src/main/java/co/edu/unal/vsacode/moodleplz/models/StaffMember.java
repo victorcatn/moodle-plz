@@ -12,10 +12,11 @@ public class StaffMember {
     private String id;
     private String document;
     private String email;
-    private String password;
     private String name;
     private String lastName;
     private String state;
+    private String password;
+    private String typeStaffMember;
     private List<Skill> skills;
     private List<Knowledge> knowledge;
     private List<Group> groups;
@@ -23,13 +24,14 @@ public class StaffMember {
     public StaffMember(){
 
     }
-
-    public StaffMember(String document, String email, String password, String name, String lastName){
+    public StaffMember(String document, String email, String name, String lastName, String state, String password, String typeStaffMember) {
         this.document = document;
         this.email = email;
-        this.password = password;
         this.name = name;
         this.lastName = lastName;
+        this.state = state;
+        this.password = password;
+        this.typeStaffMember = typeStaffMember;
     }
 
     public String getState() {
@@ -112,12 +114,28 @@ public class StaffMember {
         return id;
     }
 
-    @Override
-    public String toString(){
-        return String.format(
-                "Customer[id=%s, Identification Card='%s', Name='%s', lastName='%s', Email='%s']",
-                id, document, name,lastName, email);
+
+    public String getTypeStaffMember() {
+        return typeStaffMember;
     }
 
+    public void setTypeStaffMember(String typeStaffMember) {
+        this.typeStaffMember = typeStaffMember;
+    }
 
+    @Override
+    public String toString() {
+        return "StaffMember{" +
+                "id='" + id + '\'' +
+                ", document='" + document + '\'' +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", state='" + state + '\'' +
+                ", typeStaffMember='" + typeStaffMember + '\'' +
+                ", skills=" + skills +
+                ", knowledge=" + knowledge +
+                ", groups=" + groups +
+                '}';
+    }
 }
