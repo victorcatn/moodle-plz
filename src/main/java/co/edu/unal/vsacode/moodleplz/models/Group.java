@@ -7,7 +7,9 @@ import java.util.List;
 
 @Document
 public class Group {
+
     @Id
+    private String id;
     private List<String> membersId;
     private String projectId;
     //private String name; TODO
@@ -27,6 +29,14 @@ public class Group {
 
     public void setProjectId(String projectId) {
         this.projectId = projectId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Group(List<String> membersId, String projectId) {

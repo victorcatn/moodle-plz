@@ -1,9 +1,6 @@
 package co.edu.unal.vsacode.moodleplz.services;
 
-import co.edu.unal.vsacode.moodleplz.models.Group;
-import co.edu.unal.vsacode.moodleplz.models.Project;
-import co.edu.unal.vsacode.moodleplz.models.Skill;
-import co.edu.unal.vsacode.moodleplz.models.StaffMember;
+import co.edu.unal.vsacode.moodleplz.models.*;
 import co.edu.unal.vsacode.moodleplz.repositories.GroupRepository;
 import co.edu.unal.vsacode.moodleplz.repositories.StaffMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +21,12 @@ public class GroupService {
     @Autowired
     private StaffMemberRepository staffMemberRepository;
 
+    @Autowired
+    private StaffMemberService staffMemberService;
+
+    @Autowired
+    private ProjectService projectService;
+
     public List<Group> getGroups(){
         return repository.findAll();
     }
@@ -38,14 +41,34 @@ public class GroupService {
         List<String> members = new ArrayList<>();
 
         for(Skill s : project.getNeededSkill()){
-            members.add(staffMemberRepository.findBySkillsContaining(s).getId());
+            StaffMember member = staffMemberRepository.findBySkillsContaining(s);
+            if(member != null){
+                members.add(member.getId());
+            }
+
+        }
+
+        for(Knowledge k : project.getNeededKnowledge()){
+            StaffMember member = staffMemberRepository.findByKnowledgesContaining(k);
+            if(member != null){
+                members.add(member.getId());
+            }
         }
 
         Group group = new Group( members, project.getId());
+
         return createGroup(group);
     }
 
     public Group createGroup(Group group){
+        for(String memberId : group.getMembersId()){
+            StaffMember member = staffMemberService.getStaffMember(memberId);
+            member.setGroupId(group.getId());
+            staffMemberService.updateStaffMember(member,memberId);
+        }
+        Project project = projectService.getProject(group.getProjectId()).orElse(null);
+        project.setAssignedGroupId(group.getId());
+        projectService.saveProject(project);
         return repository.save(group);
     }
 

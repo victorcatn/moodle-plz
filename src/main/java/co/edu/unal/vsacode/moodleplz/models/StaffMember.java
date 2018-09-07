@@ -3,6 +3,7 @@ package co.edu.unal.vsacode.moodleplz.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document
@@ -18,8 +19,8 @@ public class StaffMember {
 
     private Boolean isHRM; //TODO: separate classes for HRM and staff member
 
-    private List<Skill> skills;
-    private List<Knowledge> knowledge;
+    private List<Skill> skills = new ArrayList<>();
+    private List<Knowledge> knowledges = new ArrayList<>();
 
     private String groupId;
 
@@ -88,12 +89,22 @@ public class StaffMember {
         this.skills = skills;
     }
 
-    public List<Knowledge> getKnowledge() {
-        return knowledge;
+    public List<Skill> addSkill(Skill skill){
+        this.skills.add(skill);
+        return skills;
     }
 
-    public void setKnowledge(List<Knowledge> knowledge) {
-        this.knowledge = knowledge;
+    public List<Knowledge> getKnowledge() {
+        return knowledges;
+    }
+
+    public void setKnowledges(List<Knowledge> knowledges) {
+        this.knowledges = knowledges;
+    }
+
+    public List<Knowledge> addKnowledge(Knowledge knowledge){
+        this.knowledges.add(knowledge);
+        return knowledges;
     }
 
     public Boolean isHRM() {
