@@ -15,15 +15,13 @@ public class StaffMember {
     private String password;
     private String name;
     private String lastName;
-    private String state;
-    private Boolean isHRM;
+
+    private Boolean isHRM; //TODO: separate classes for HRM and staff member
+
     private List<Skill> skills;
     private List<Knowledge> knowledge;
-    private List<Group> groups;
 
-    public StaffMember(){
-
-    }
+    private String groupId;
 
     public StaffMember(String document, String email, String password, String name, String lastName){
         this.document = document;
@@ -33,32 +31,21 @@ public class StaffMember {
         this.lastName = lastName;
     }
 
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public List<Group> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getDocument() {
         return document;
     }
 
     public void setDocument(String document) {
+        if(document.length()>10) return; //TODO: find better validation techniques
         this.document = document;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -109,11 +96,7 @@ public class StaffMember {
         this.knowledge = knowledge;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public Boolean getHRM() {
+    public Boolean isHRM() {
         return isHRM;
     }
 
@@ -121,12 +104,11 @@ public class StaffMember {
         isHRM = HRM;
     }
 
-    @Override
-    public String toString(){
-        return String.format(
-                "Customer[id=%s, Identification Card='%s', Name='%s', lastName='%s', Email='%s']",
-                id, document, name,lastName, email);
+    public String getGroupId() {
+        return groupId;
     }
 
-
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 }
