@@ -9,5 +9,7 @@ public class MoodlePlzApplication {
 	public static void main(String[] args) {
 
 		SpringApplication.run(MoodlePlzApplication.class, args);
+
+
 	}
 }

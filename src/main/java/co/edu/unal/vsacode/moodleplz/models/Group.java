@@ -8,29 +8,29 @@ import java.util.List;
 @Document
 public class Group {
     @Id
-    private List<StaffMember> members;
-    private Project project;
+    private List<String> membersId;
+    private String projectId;
     //private String name; TODO
 
-    public List<StaffMember> getMembers() {
-        return members;
+
+    public List<String> getMembersId() {
+        return membersId;
     }
 
-    public void setMembers(List<StaffMember> members) {
-        this.members = members;
+    public void setMembersId(List<String> membersId) {
+        this.membersId = membersId;
     }
 
-    public Project getProject() {
-        return project;
+    public String getProjectId() {
+        return projectId;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
     }
 
-
-    public Group(List<StaffMember> members, Project project) {
-        this.members = members;
-        this.project = project;
+    public Group(List<String> membersId, String projectId) {
+        this.membersId = membersId;
+        this.projectId = projectId;
     }
 }

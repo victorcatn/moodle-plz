@@ -18,14 +18,9 @@ public class Project {
     private List<Skill> neededSkill;
     private List<Knowledge> neededKnowledge;
 
-    private Group assignedGroup;
+    private String assignedGroupId;
 
     //private int staffNeeded; //TODO
-
-    public Project(){
-
-    }
-
 
     public Project(String name, Date startDate, List<Skill> neededSkill, List<Knowledge> neededKnowledge) {
         this.startDate = startDate;
@@ -66,12 +61,12 @@ public class Project {
         this.neededKnowledge = neededKnowledge;
     }
 
-    public Group getAssignedGroup() {
-        return assignedGroup;
+    public String getAssignedGroupId() {
+        return assignedGroupId;
     }
 
-    public void setAssignedGroup(Group assignedGroup) {
-        this.assignedGroup = assignedGroup;
+    public void setAssignedGroupId(String assignedGroupId) {
+        this.assignedGroupId = assignedGroupId;
     }
 
     public Date getEndDate() {
@@ -96,7 +91,7 @@ public class Project {
                 ", endDate=" + endDate +
                 ", neededSkill=" + neededSkill +
                 ", neededKnowledge=" + neededKnowledge +
-                ", assignedGroup=" + assignedGroup +
+                ", assignedGroup=" + assignedGroupId +
                 '}';
     }
 }

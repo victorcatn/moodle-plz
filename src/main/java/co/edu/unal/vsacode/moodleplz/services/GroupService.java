@@ -35,13 +35,13 @@ public class GroupService {
 
     public Group generateGroup(Project project){
 
-        List<StaffMember> members = new ArrayList<>();
+        List<String> members = new ArrayList<>();
 
         for(Skill s : project.getNeededSkill()){
-            members.add(staffMemberRepository.findBySkillsContaining(s));
+            members.add(staffMemberRepository.findBySkillsContaining(s).getId());
         }
 
-        Group group = new Group( members,project);
+        Group group = new Group( members, project.getId());
         return createGroup(group);
     }
 
