@@ -1,9 +1,11 @@
 package co.edu.unal.vsacode.moodleplz.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+@Document
 public class StaffMember {
 
     @Id
@@ -13,6 +15,7 @@ public class StaffMember {
     private String password;
     private String name;
     private String lastName;
+    private String state;
     private List<Skill> skills;
     private List<Knowledge> knowledge;
     private List<Group> groups;
@@ -29,6 +32,13 @@ public class StaffMember {
         this.lastName = lastName;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public List<Group> getGroups() {
         return groups;
@@ -36,6 +46,10 @@ public class StaffMember {
 
     public void setGroups(List<Group> groups) {
         this.groups = groups;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDocument() {
@@ -98,15 +112,12 @@ public class StaffMember {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     @Override
     public String toString(){
         return String.format(
                 "Customer[id=%s, Identification Card='%s', Name='%s', lastName='%s', Email='%s']",
                 id, document, name,lastName, email);
     }
+
 
 }

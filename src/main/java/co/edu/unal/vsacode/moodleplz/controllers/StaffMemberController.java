@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/staffmember")
+@RequestMapping("/staffmembers")
 public class StaffMemberController {
 
     @Autowired
@@ -18,6 +18,11 @@ public class StaffMemberController {
         return staffMemberService.getStaffMembers();
     }
 
+    @GetMapping("/{id}")
+    StaffMember getStaffMember(@PathVariable String id) {
+        return staffMemberService.getStaffMember(id);
+    }
+
     @PostMapping
     StaffMember saveStaffMember(@RequestBody StaffMember staffMember) {
         return staffMemberService.saveStaffMember(staffMember);
@@ -25,13 +30,11 @@ public class StaffMemberController {
 
     @PutMapping("/{id}")
     StaffMember editStaffMember(@RequestBody StaffMember newStaffMember, @PathVariable String id) {
-        return staffMemberService.saveStaffMember(newStaffMember);
+        return staffMemberService.updateStaffMember(newStaffMember, id);
     }
 
     @DeleteMapping("/{id}")
     void deleteEmployee(@PathVariable String id) {
-        StaffMember staffMember = new StaffMember();
-        staffMember.setId(id);
-        staffMemberService.deleteStaffMember(staffMember);
+        staffMemberService.deleteStaffMember(id);
     }
 }
