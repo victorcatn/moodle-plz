@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GroupService {
@@ -22,6 +23,15 @@ public class GroupService {
 
     @Autowired
     private StaffMemberRepository staffMemberRepository;
+
+    public List<Group> getGroups(){
+        return repository.findAll();
+    }
+
+    public Group getGroup(String id) {
+        Optional<Group> result = repository.findById(id);
+        return result.orElse(null);
+    }
 
     public Group generateGroup(Project project){
 
@@ -37,5 +47,16 @@ public class GroupService {
 
     public Group createGroup(Group group){
         return repository.save(group);
+    }
+
+    public Group updateGroup(Group newGroup, String id){
+        if(!repository.findById(id).isPresent()){
+            return null;
+        }
+        return repository.save(newGroup);
+    }
+
+    public void deleteGroup(String id){
+        repository.deleteById(id);
     }
 }
