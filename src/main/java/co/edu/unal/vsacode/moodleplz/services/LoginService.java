@@ -14,18 +14,26 @@ public class LoginService {
     @Autowired
     private StaffMemberRepository repository;
 
+    public LoginService(){
+
+    }
+
+    /**
+     * Check if the attempt to enter an account is valid, looking in the repository of staff
+     * members the document and password entered through the login, if a match is found with
+     * both data then the login is taken as valid.
+     * NOTE: The document is an alternative key
+     * @param login Object with document and password of the staff member
+     * @return If the staff member was found return the staff member, if the staff member wasn´t found return
+     * null
+     */
     public StaffMember validateLogin(Login login){
         StaffMember staffMember;
 
         Optional<StaffMember> staffMemberOptional = repository.findByPasswordAndDocument(login.getDocument(),
                 login.getPassword());
 
-        if (staffMemberOptional.isPresent()) {
-            staffMember = staffMemberOptional.get();
-        }
-        else{
-            staffMember = null;
-        }
+        staffMember = staffMemberOptional.orElse(null);
         return staffMember;
     }
 }
