@@ -27,4 +27,8 @@ public class Skill {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Skill(String name) {
+        this.name = name;
+    }
 }

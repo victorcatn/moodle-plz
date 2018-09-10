@@ -36,9 +36,7 @@ public class StaffMemberService {
     }
 
     public void deleteStaffMember(String id){
-        StaffMember staffMember = new StaffMember();
-        staffMember.setId(id);
-        repository.delete(staffMember);
+        repository.deleteById(id);
     }
 
 }

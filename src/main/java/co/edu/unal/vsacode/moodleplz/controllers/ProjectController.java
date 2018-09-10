@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/project")
+@RequestMapping("/projects")
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
@@ -73,8 +73,6 @@ public class ProjectController {
      */
     @DeleteMapping("/{id}")
     void deleteProject(@PathVariable String id) {
-        Project project = new Project();
-        project.setId(id);
-        projectService.deleteProject(project);
+        projectService.deleteProject(id);
     }
 }

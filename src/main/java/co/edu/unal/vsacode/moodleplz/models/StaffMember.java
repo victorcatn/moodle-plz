@@ -3,6 +3,7 @@ package co.edu.unal.vsacode.moodleplz.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document
@@ -12,46 +13,23 @@ public class StaffMember {
     private String id;
     private String document;
     private String email;
+    private String password;
     private String name;
     private String lastName;
-    private String state;
-    private String password;
-    private String typeStaffMember;
-    private List<Skill> skills;
-    private List<Knowledge> knowledge;
-    private List<Group> groups;
 
-    public StaffMember(){
+    private Boolean isHumanResourcesManager; //TODO: separate classes for HRM and staff member
 
-    }
-    public StaffMember(String document, String email, String name, String lastName, String state, String password, String typeStaffMember) {
+    private List<Skill> skills = new ArrayList<>();
+    private List<Knowledge> knowledges = new ArrayList<>();
+
+    private String groupId;
+
+    public StaffMember(String document, String email, String password, String name, String lastName){
         this.document = document;
         this.email = email;
+        this.password = password;
         this.name = name;
         this.lastName = lastName;
-        this.state = state;
-        this.password = password;
-        this.typeStaffMember = typeStaffMember;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public List<Group> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getDocument() {
@@ -60,6 +38,14 @@ public class StaffMember {
 
     public void setDocument(String document) {
         this.document = document;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -102,40 +88,37 @@ public class StaffMember {
         this.skills = skills;
     }
 
+    public List<Skill> addSkill(Skill skill){
+        this.skills.add(skill);
+        return skills;
+    }
+
     public List<Knowledge> getKnowledge() {
-        return knowledge;
+        return knowledges;
     }
 
-    public void setKnowledge(List<Knowledge> knowledge) {
-        this.knowledge = knowledge;
+    public void setKnowledges(List<Knowledge> knowledges) {
+        this.knowledges = knowledges;
     }
 
-    public String getId() {
-        return id;
+    public List<Knowledge> addKnowledge(Knowledge knowledge){
+        this.knowledges.add(knowledge);
+        return knowledges;
     }
 
-
-    public String getTypeStaffMember() {
-        return typeStaffMember;
+    public Boolean isHumanResourcesManager() {
+        return isHumanResourcesManager;
     }
 
-    public void setTypeStaffMember(String typeStaffMember) {
-        this.typeStaffMember = typeStaffMember;
+    public void setHumanResourcesManager(Boolean isHumanResourcesManager) {
+        this.isHumanResourcesManager = isHumanResourcesManager;
     }
 
-    @Override
-    public String toString() {
-        return "StaffMember{" +
-                "id='" + id + '\'' +
-                ", document='" + document + '\'' +
-                ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", state='" + state + '\'' +
-                ", typeStaffMember='" + typeStaffMember + '\'' +
-                ", skills=" + skills +
-                ", knowledge=" + knowledge +
-                ", groups=" + groups +
-                '}';
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 }
