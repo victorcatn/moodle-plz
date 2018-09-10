@@ -24,6 +24,9 @@ public class StaffMember {
 
     private String groupId;
 
+    public StaffMember() {
+    }
+
     public StaffMember(String document, String email, String password, String name, String lastName){
         this.document = document;
         this.email = email;

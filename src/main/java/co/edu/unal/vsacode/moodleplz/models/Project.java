@@ -22,12 +22,16 @@ public class Project {
 
     //private int staffNeeded; //TODO
 
+    public Project() {
+    }
+
     public Project(String name, Date startDate, List<Skill> neededSkill, List<Knowledge> neededKnowledge) {
         this.startDate = startDate;
         this.name = name;
         this.neededSkill = neededSkill;
         this.neededKnowledge = neededKnowledge;
     }
+
 
     public String getId() {
         return id;

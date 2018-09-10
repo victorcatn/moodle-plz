@@ -12,6 +12,13 @@ public class Skill {
 
     private String name;
 
+    public Skill() {
+    }
+
+    public Skill(String name) {
+        this.name = name;
+    }
+
     public String getId() {
         return id;
     }
@@ -28,7 +35,4 @@ public class Skill {
         this.name = name;
     }
 
-    public Skill(String name) {
-        this.name = name;
-    }
 }
