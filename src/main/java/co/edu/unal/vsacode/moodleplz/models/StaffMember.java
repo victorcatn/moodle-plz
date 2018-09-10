@@ -121,4 +121,19 @@ public class StaffMember {
     public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
+
+    @Override
+    public String toString() {
+        return "StaffMember{" +
+                "id='" + id + '\'' +
+                ", document='" + document + '\'' +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", isHumanResourcesManager=" + isHumanResourcesManager +
+                ", skills=" + skills +
+                ", knowledges=" + knowledges +
+                ", groupId='" + groupId + '\'' +
+                '}';
+    }
 }
