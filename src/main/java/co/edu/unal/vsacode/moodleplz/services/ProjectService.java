@@ -54,9 +54,9 @@ public class ProjectService {
 
     /**
      * Delete of the project repository the provided project
-     * @param project company´s project
+     * @param id company´s project id
      */
-    public void deleteProject(Project project){
-        repository.delete(project);
+    public void deleteProject(String id){
+        repository.deleteById(id);
     }
 }

@@ -3,6 +3,7 @@ package co.edu.unal.vsacode.moodleplz.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document
@@ -15,14 +16,13 @@ public class StaffMember {
     private String password;
     private String name;
     private String lastName;
-    private String state;
-    private List<Skill> skills;
-    private List<Knowledge> knowledge;
-    private List<Group> groups;
 
-    public StaffMember(){
+    private Boolean isHumanResourcesManager; //TODO: separate classes for HRM and staff member
 
-    }
+    private List<Skill> skills = new ArrayList<>();
+    private List<Knowledge> knowledges = new ArrayList<>();
+
+    private String groupId;
 
     public StaffMember(String document, String email, String password, String name, String lastName){
         this.document = document;
@@ -32,32 +32,20 @@ public class StaffMember {
         this.lastName = lastName;
     }
 
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public List<Group> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getDocument() {
         return document;
     }
 
     public void setDocument(String document) {
         this.document = document;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -100,24 +88,37 @@ public class StaffMember {
         this.skills = skills;
     }
 
+    public List<Skill> addSkill(Skill skill){
+        this.skills.add(skill);
+        return skills;
+    }
+
     public List<Knowledge> getKnowledge() {
-        return knowledge;
+        return knowledges;
     }
 
-    public void setKnowledge(List<Knowledge> knowledge) {
-        this.knowledge = knowledge;
+    public void setKnowledges(List<Knowledge> knowledges) {
+        this.knowledges = knowledges;
     }
 
-    public String getId() {
-        return id;
+    public List<Knowledge> addKnowledge(Knowledge knowledge){
+        this.knowledges.add(knowledge);
+        return knowledges;
     }
 
-    @Override
-    public String toString(){
-        return String.format(
-                "Customer[id=%s, Identification Card='%s', Name='%s', lastName='%s', Email='%s']",
-                id, document, name,lastName, email);
+    public Boolean isHumanResourcesManager() {
+        return isHumanResourcesManager;
     }
 
+    public void setHumanResourcesManager(Boolean isHumanResourcesManager) {
+        this.isHumanResourcesManager = isHumanResourcesManager;
+    }
 
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 }
