@@ -17,7 +17,7 @@ public class StaffMember {
     private String name;
     private String lastName;
 
-    private Boolean isHRM; //TODO: separate classes for HRM and staff member
+    private Boolean isHumanResourcesManager; //TODO: separate classes for HRM and staff member
 
     private List<Skill> skills = new ArrayList<>();
     private List<Knowledge> knowledges = new ArrayList<>();
@@ -37,7 +37,6 @@ public class StaffMember {
     }
 
     public void setDocument(String document) {
-        if(document.length()>10) return; //TODO: find better validation techniques
         this.document = document;
     }
 
@@ -107,12 +106,12 @@ public class StaffMember {
         return knowledges;
     }
 
-    public Boolean isHRM() {
-        return isHRM;
+    public Boolean isHumanResourcesManager() {
+        return isHumanResourcesManager;
     }
 
-    public void setHRM(Boolean HRM) {
-        isHRM = HRM;
+    public void setHumanResourcesManager(Boolean isHumanResourcesManager) {
+        this.isHumanResourcesManager = isHumanResourcesManager;
     }
 
     public String getGroupId() {

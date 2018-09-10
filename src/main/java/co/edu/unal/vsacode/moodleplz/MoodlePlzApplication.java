@@ -25,40 +25,5 @@ public class MoodlePlzApplication {
 
 		SpringApplication.run(MoodlePlzApplication.class, args);
 
-
-
-
-	}
-	@Bean
-	CommandLineRunner init(GroupService groupService,
-						   GroupRepository groupRepository,
-						   StaffMemberService staffMemberService,
-						   ProjectService projectService
-						   ) {
-
-		return args -> {
-
-			Skill java = new Skill("Java");
-			Skill php = new Skill("php");
-
-			List<Skill> skills = new ArrayList<>();
-			skills.add(java);
-			skills.add(php);
-
-			Project project = new Project("moodle-plz",new Date(),skills,null);
-
-			/*projectService.saveProject(project);
-
-			StaffMember juan = new StaffMember("10","1","1","pancho","perez");
-			juan.addSkill(new Skill("php"));
-			staffMemberService.saveStaffMember(juan);
-
-			Group gp = groupService.generateGroup(project);*/
-
-			//System.out.println(gp.getMembersId());
-
-
-		};
-
 	}
 }
