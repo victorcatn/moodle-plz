@@ -19,17 +19,19 @@ public class StaffMember {
 
     private Boolean isHumanResourcesManager; //TODO: separate classes for HRM and staff member
 
-    private List<Skill> skills = new ArrayList<>();
-    private List<Knowledge> knowledges = new ArrayList<>();
+    private List<SkillScore> skills = new ArrayList<>();
+    private List<KnowledgeScore> knowledges = new ArrayList<>();
 
-    private String groupId;
-
-    public StaffMember(String document, String email, String password, String name, String lastName){
+    public StaffMember(String document, String email, String password, String name, String lastName, Boolean isHumanResourcesManager) {
         this.document = document;
         this.email = email;
         this.password = password;
         this.name = name;
         this.lastName = lastName;
+        this.isHumanResourcesManager = isHumanResourcesManager;
+    }
+
+    public StaffMember() {
     }
 
     public String getDocument() {
@@ -80,45 +82,38 @@ public class StaffMember {
         this.lastName = lastName;
     }
 
-    public List<Skill> getSkills() {
+    public List<SkillScore> getSkills() {
         return skills;
     }
 
-    public void setSkills(List<Skill> skills) {
+    public void setSkills(List<SkillScore> skills) {
         this.skills = skills;
     }
 
-    public List<Skill> addSkill(Skill skill){
+    public List<SkillScore> addSkill(SkillScore skill){
         this.skills.add(skill);
         return skills;
     }
 
-    public List<Knowledge> getKnowledge() {
+    public List<KnowledgeScore> getKnowledges() {
         return knowledges;
     }
 
-    public void setKnowledges(List<Knowledge> knowledges) {
+    public void setKnowledges(List<KnowledgeScore> knowledges) {
         this.knowledges = knowledges;
     }
 
-    public List<Knowledge> addKnowledge(Knowledge knowledge){
+    public List<KnowledgeScore> addKnowledge(KnowledgeScore knowledge){
         this.knowledges.add(knowledge);
         return knowledges;
     }
 
-    public Boolean isHumanResourcesManager() {
+    public Boolean getIsHumanResourcesManager() {
         return isHumanResourcesManager;
     }
 
-    public void setHumanResourcesManager(Boolean isHumanResourcesManager) {
+    public void setIsHumanResourcesManager(Boolean isHumanResourcesManager) {
         this.isHumanResourcesManager = isHumanResourcesManager;
     }
 
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
 }

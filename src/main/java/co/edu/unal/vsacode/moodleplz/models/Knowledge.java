@@ -10,7 +10,6 @@ public class Knowledge {
     private String id;
 
     private String name;
-    private float score;
 
     public String getId() {
         return id;
@@ -28,11 +27,10 @@ public class Knowledge {
         this.name = name;
     }
 
-    public float getScore() {
-        return score;
+    public Knowledge(String name) {
+        this.name = name;
     }
 
-    public void setScore(float score) {
-        this.score = score;
+    public Knowledge() {
     }
 }

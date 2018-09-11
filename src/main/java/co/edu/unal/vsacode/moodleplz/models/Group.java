@@ -43,4 +43,7 @@ public class Group {
         this.membersId = membersId;
         this.projectId = projectId;
     }
+
+    public Group() {
+    }
 }
