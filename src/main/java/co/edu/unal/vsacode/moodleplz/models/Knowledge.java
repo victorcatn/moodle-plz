@@ -14,9 +14,8 @@ public class Knowledge {
     public Knowledge() {
     }
 
-    public Knowledge(String name, float score) {
+    public Knowledge(String name) {
         this.name = name;
-        this.score = score;
     }
 
     public String getId() {
@@ -35,10 +34,6 @@ public class Knowledge {
         this.name = name;
     }
 
-    public Knowledge(String name) {
-        this.name = name;
-    }
 
-    public Knowledge() {
-    }
+
 }
