@@ -26,4 +26,11 @@ public class Knowledge {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Knowledge(String name) {
+        this.name = name;
+    }
+
+    public Knowledge() {
+    }
 }

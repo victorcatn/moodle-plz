@@ -1,6 +1,5 @@
 package co.edu.unal.vsacode.moodleplz.models;
 
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -30,5 +29,8 @@ public class Skill {
 
     public Skill(String name) {
         this.name = name;
+    }
+
+    public Skill() {
     }
 }

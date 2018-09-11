@@ -15,18 +15,19 @@ public class Project {
     private Date startDate;
     private Date endDate;
 
-    private List<Skill> neededSkill;
-    private List<Knowledge> neededKnowledge;
-
-    private String assignedGroupId;
+    private List<SkillScore> neededSkills;
+    private List<KnowledgeScore> neededKnowledges;
 
     //private int staffNeeded; //TODO
 
-    public Project(String name, Date startDate, List<Skill> neededSkill, List<Knowledge> neededKnowledge) {
+    public Project(String name, Date startDate, List<SkillScore> neededSkills, List<KnowledgeScore> neededKnowledges) {
         this.startDate = startDate;
         this.name = name;
-        this.neededSkill = neededSkill;
-        this.neededKnowledge = neededKnowledge;
+        this.neededSkills = neededSkills;   //TODO if null set as empty list
+        this.neededKnowledges = neededKnowledges;
+    }
+
+    public Project() {
     }
 
     public String getId() {
@@ -45,28 +46,30 @@ public class Project {
         this.name = name;
     }
 
-    public List<Skill> getNeededSkill() {
-        return neededSkill;
+    public List<SkillScore> getNeededSkills() {
+        return neededSkills;
     }
 
-    public void setNeededSkill(List<Skill> neededSkill) {
-        this.neededSkill = neededSkill;
+    public void setNeededSkill(List<SkillScore> neededSkill) {
+        this.neededSkills = neededSkill;
     }
 
-    public List<Knowledge> getNeededKnowledge() {
-        return neededKnowledge;
+    public List<SkillScore> addSNeededSkill(SkillScore skillScore){
+        this.neededSkills.add(skillScore);
+        return neededSkills;
     }
 
-    public void setNeededKnowledge(List<Knowledge> neededKnowledge) {
-        this.neededKnowledge = neededKnowledge;
+    public List<KnowledgeScore> getNeededKnowledges() {
+        return neededKnowledges;
     }
 
-    public String getAssignedGroupId() {
-        return assignedGroupId;
+    public void setNeededKnowledge(List<KnowledgeScore> neededKnowledges) {
+        this.neededKnowledges = neededKnowledges;
     }
 
-    public void setAssignedGroupId(String assignedGroupId) {
-        this.assignedGroupId = assignedGroupId;
+    public List<KnowledgeScore> addSNeededKnowledge(KnowledgeScore knowledgeScore){
+        this.neededKnowledges.add(knowledgeScore);
+        return neededKnowledges;
     }
 
     public Date getEndDate() {
@@ -89,9 +92,8 @@ public class Project {
                 ", name='" + name + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", neededSkill=" + neededSkill +
-                ", neededKnowledge=" + neededKnowledge +
-                ", assignedGroup=" + assignedGroupId +
+                ", neededSkills=" + neededSkills +
+                ", neededKnowledges=" + neededKnowledges +
                 '}';
     }
 }

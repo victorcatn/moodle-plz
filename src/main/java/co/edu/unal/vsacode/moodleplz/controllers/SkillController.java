@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/skill")
+@RequestMapping("/skills")
 public class SkillController {
 
     @Autowired
