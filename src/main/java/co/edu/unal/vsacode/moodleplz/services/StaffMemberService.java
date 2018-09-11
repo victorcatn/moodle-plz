@@ -32,6 +32,9 @@ public class StaffMemberService {
         if(!repository.findById(id).isPresent()){
             return null;
         }
+        else{
+            staffMember.setId(id);
+        }
         return repository.save(staffMember);
     }
 

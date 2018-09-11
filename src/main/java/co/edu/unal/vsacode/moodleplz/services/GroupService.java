@@ -71,6 +71,9 @@ public class GroupService {
         if(!repository.findById(id).isPresent()){
             return null;
         }
+        else{
+            newGroup.setId(id);
+        }
         return repository.save(newGroup);
     }
 

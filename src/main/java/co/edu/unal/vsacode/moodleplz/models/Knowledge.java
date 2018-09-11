@@ -11,6 +11,14 @@ public class Knowledge {
 
     private String name;
 
+    public Knowledge() {
+    }
+
+    public Knowledge(String name, float score) {
+        this.name = name;
+        this.score = score;
+    }
+
     public String getId() {
         return id;
     }
