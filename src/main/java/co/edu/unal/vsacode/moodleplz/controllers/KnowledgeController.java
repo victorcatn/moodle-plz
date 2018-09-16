@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/knowledge")
+@RequestMapping("/knowledges")
 public class KnowledgeController {
 
     @Autowired
