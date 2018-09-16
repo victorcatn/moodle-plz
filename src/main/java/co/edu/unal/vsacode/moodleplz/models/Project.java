@@ -3,6 +3,7 @@ package co.edu.unal.vsacode.moodleplz.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,16 +16,16 @@ public class Project {
     private Date startDate;
     private Date endDate;
 
-    private List<SkillScore> neededSkills;
-    private List<KnowledgeScore> neededKnowledges;
+    private List<SkillScore> neededSkills = new ArrayList<>();
+    private List<KnowledgeScore> neededKnowledges = new ArrayList<>();
 
     //private int staffNeeded; //TODO
 
     public Project(String name, Date startDate, List<SkillScore> neededSkills, List<KnowledgeScore> neededKnowledges) {
         this.startDate = startDate;
         this.name = name;
-        this.neededSkills = neededSkills;   //TODO if null set as empty list
-        this.neededKnowledges = neededKnowledges;
+        if(neededSkills != null){this.neededSkills = neededSkills;}
+        if(neededKnowledges != null){this.neededKnowledges = neededKnowledges;}
     }
 
     public Project() {
