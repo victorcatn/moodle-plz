@@ -64,7 +64,16 @@ public class GroupService {
     }
 
     public Group createGroup(Group group){
-        return repository.save(group);
+        Optional<Project> selectedProject = projectService.getProject(group.getProjectId());
+        if(!selectedProject.isPresent()){
+            return null;
+        }
+        else {
+            Project changedProject = selectedProject.get();
+            changedProject.setAssignedGroupId(group.getId());
+            projectService.saveProject(changedProject);
+            return repository.save(group);
+        }
     }
 
     public Group updateGroup(Group newGroup, String id){
