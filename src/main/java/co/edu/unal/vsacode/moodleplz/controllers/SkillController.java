@@ -15,9 +15,12 @@ public class SkillController {
     private SkillService skillService;
 
     @GetMapping
-    List<Skill> getSkill(){
+    List<Skill> getSkills(){
         return skillService.getSkill();
     }
+
+    @GetMapping("/{id}")
+    Skill getSkill(@PathVariable String id){return skillService.getSkillById(id);}
 
     @PostMapping
     public Skill saveSkill(@RequestBody Skill newSkill){
