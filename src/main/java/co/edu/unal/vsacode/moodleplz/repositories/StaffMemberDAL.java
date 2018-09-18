@@ -22,8 +22,6 @@ public class StaffMemberDAL {
     public StaffMember findBySatisfiedSkill(SkillScore skillScore) { //TODO change for find All for being able to select a different staff member
         Query query = new Query();
 
-        /*query.addCriteria(Criteria.where("skills.skillId").in(skillScore.getSkillId())
-                            .andOperator(Criteria.where("skills.score").gte(skillScore.getScore())));*/
         query.addCriteria(Criteria.where("skills").elemMatch(Criteria.where("skillId").is(skillScore.getSkillId())
                             .andOperator(Criteria.where("score").gte(skillScore.getScore()))));
         return mongoTemplate.findOne(query, StaffMember.class);
@@ -32,8 +30,8 @@ public class StaffMemberDAL {
     public StaffMember findBySatisfiedKnowledge(KnowledgeScore knowledgeScore) { //TODO change for find All for being able to select a different staff member
         Query query = new Query();
 
-        query.addCriteria(Criteria.where("knowledges.knowledgeId").in(knowledgeScore.getKnowledgeId())
-                .andOperator(Criteria.where("knowledges.score").gte(knowledgeScore.getScore())));
+        query.addCriteria(Criteria.where("knowledges").elemMatch(Criteria.where("knowledgeId").is(knowledgeScore.getKnowledgeId())
+                .andOperator(Criteria.where("score").gte(knowledgeScore.getScore()))));
         return mongoTemplate.findOne(query, StaffMember.class);
     }
 
