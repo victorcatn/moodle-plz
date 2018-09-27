@@ -47,4 +47,12 @@ public class Group {
     }
 
 
+    @Override
+    public String toString() {
+        return "Group{" +
+                "id='" + id + '\'' +
+                ", membersId=" + membersId +
+                ", projectId='" + projectId + '\'' +
+                '}';
+    }
 }

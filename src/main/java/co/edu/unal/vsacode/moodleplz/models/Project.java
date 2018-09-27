@@ -97,14 +97,12 @@ public class Project {
 
     @Override
     public String toString() {
-        return "Project{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", neededSkills=" + neededSkills +
-                ", neededKnowledges=" + neededKnowledges +
-                ", assignedGroupId='" + assignedGroupId + '\'' +
-                '}';
+        return  "id='" + id + '\n' +
+                "name='" + name + '\n' +
+                "startDate=" + startDate + '\n' +
+                "endDate=" + endDate + '\n' +
+                "neededSkills=" + neededSkills.toString() + '\n' +
+                "neededKnowledges=" + neededKnowledges.toString() + '\n' +
+                "assignedGroupId='" + assignedGroupId + '\'';
     }
 }

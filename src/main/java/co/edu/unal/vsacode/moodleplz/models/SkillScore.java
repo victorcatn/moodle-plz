@@ -27,4 +27,12 @@ public class SkillScore {
 
     public SkillScore() {
     }
+
+    @Override
+    public String toString() {
+        return "SkillScore{" +
+                "skillId='" + skillId + '\'' +
+                ", score=" + score +
+                '}';
+    }
 }

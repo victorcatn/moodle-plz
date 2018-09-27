@@ -29,6 +29,9 @@ public class GroupService {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private EmailService emailService;
+
     public List<Group> getGroups(){
         return repository.findAll();
     }
@@ -37,6 +40,7 @@ public class GroupService {
         Optional<Group> result = repository.findById(id);
         return result.orElse(null);
     }
+
 
     public Group generateGroup(Project project){
 
@@ -60,20 +64,21 @@ public class GroupService {
 
         Group group = new Group( members, project.getId()); //TODO give a list of members to choose the wanted
 
+
+
         return group;
     }
 
     public Group createGroup(Group group){
-        Optional<Project> selectedProject = projectService.getProject(group.getProjectId());
-        if(!selectedProject.isPresent()){
-            return null;
+        Group savedGroup = repository.save(group);
+        Project selectedProject = projectService.getProjectById(savedGroup.getProjectId());
+        if(selectedProject.getAssignedGroupId() != null){
+            emailService.changesAssigendGroup(getGroup(selectedProject.getAssignedGroupId()), selectedProject);
         }
-        else {
-            Project changedProject = selectedProject.get();
-            changedProject.setAssignedGroupId(group.getId());
-            projectService.saveProject(changedProject);
-            return repository.save(group);
-        }
+        selectedProject.setAssignedGroupId(savedGroup.getId());
+        projectService.saveProject(selectedProject);
+        return savedGroup;
+
     }
 
     public Group updateGroup(Group newGroup, String id){

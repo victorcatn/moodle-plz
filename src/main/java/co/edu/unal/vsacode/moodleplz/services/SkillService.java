@@ -22,6 +22,10 @@ public class SkillService {
         return skillRepository.findById(id).orElse(null);
     }
 
+    public String getSkillName(String id){
+        return getSkillById(id).getName();
+    }
+
     public Skill saveSkill(Skill newSkill){
         return skillRepository.save(newSkill);
     }
