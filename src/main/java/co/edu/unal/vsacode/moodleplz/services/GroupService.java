@@ -2,10 +2,9 @@ package co.edu.unal.vsacode.moodleplz.services;
 
 import co.edu.unal.vsacode.moodleplz.models.*;
 import co.edu.unal.vsacode.moodleplz.repositories.GroupRepository;
+import co.edu.unal.vsacode.moodleplz.repositories.StaffMemberDAL;
 import co.edu.unal.vsacode.moodleplz.repositories.StaffMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +19,9 @@ public class GroupService {
 
     @Autowired
     private StaffMemberRepository staffMemberRepository;
+
+    @Autowired
+    private StaffMemberDAL staffMemberDAL;
 
     @Autowired
     private StaffMemberService staffMemberService;
@@ -40,41 +42,46 @@ public class GroupService {
 
         List<String> members = new ArrayList<>();
 
-        for(Skill s : project.getNeededSkill()){
-            StaffMember member = staffMemberRepository.findBySkillsContaining(s);
+        for(SkillScore s : project.getNeededSkills()){
+            StaffMember member = staffMemberDAL.findBySatisfiedSkill(s);
+
             if(member != null){
                 members.add(member.getId());
             }
 
         }
 
-        for(Knowledge k : project.getNeededKnowledge()){
-            StaffMember member = staffMemberRepository.findByKnowledgesContaining(k);
+        for(KnowledgeScore k : project.getNeededKnowledges()){
+            StaffMember member = staffMemberDAL.findBySatisfiedKnowledge(k);
             if(member != null){
                 members.add(member.getId());
             }
         }
 
-        Group group = new Group( members, project.getId());
+        Group group = new Group( members, project.getId()); //TODO give a list of members to choose the wanted
 
-        return createGroup(group);
+        return group;
     }
 
     public Group createGroup(Group group){
-        for(String memberId : group.getMembersId()){
-            StaffMember member = staffMemberService.getStaffMember(memberId);
-            member.setGroupId(group.getId());
-            staffMemberService.updateStaffMember(member,memberId);
+        Optional<Project> selectedProject = projectService.getProject(group.getProjectId());
+        if(!selectedProject.isPresent()){
+            return null;
         }
-        Project project = projectService.getProject(group.getProjectId()).orElse(null);
-        project.setAssignedGroupId(group.getId());
-        projectService.saveProject(project);
-        return repository.save(group);
+        else {
+            Project changedProject = selectedProject.get();
+            changedProject.setAssignedGroupId(group.getId());
+            projectService.saveProject(changedProject);
+            return repository.save(group);
+        }
     }
 
     public Group updateGroup(Group newGroup, String id){
         if(!repository.findById(id).isPresent()){
             return null;
+        }
+        else{
+            newGroup.setId(id);
         }
         return repository.save(newGroup);
     }

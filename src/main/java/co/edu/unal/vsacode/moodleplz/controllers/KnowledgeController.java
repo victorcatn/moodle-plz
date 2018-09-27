@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/knowledge")
+@RequestMapping("/knowledges")
 public class KnowledgeController {
 
     @Autowired
@@ -18,6 +18,9 @@ public class KnowledgeController {
     List<Knowledge> getKnowledge(){
         return knowledgeService.getKnowledge();
     }
+
+    @GetMapping("/{id}")
+    Knowledge getKnowledge(@PathVariable String id){return knowledgeService.getKnowledgeById(id);}
 
     @PutMapping("/{id}")
     public Knowledge updateCustomer(@PathVariable (name="id") String id, @RequestBody Knowledge newKnowledge){

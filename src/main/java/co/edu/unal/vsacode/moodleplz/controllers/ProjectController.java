@@ -38,9 +38,9 @@ public class ProjectController {
      * @param name name assigned by the user to the project
      * @return a project list with all project with the name provided
      */
-    @GetMapping("/{name}")
+    @GetMapping("/name/{name}")
     Optional<Project> getProjectByName(@PathVariable String name){
-        return projectService.getProject(name);
+        return projectService.getProjectbyName(name);
     }
 
 

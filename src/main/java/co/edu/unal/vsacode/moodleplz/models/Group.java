@@ -14,6 +14,13 @@ public class Group {
     private String projectId;
     //private String name; TODO
 
+    public Group() {
+    }
+
+    public Group(List<String> membersId, String projectId) {
+        this.membersId = membersId;
+        this.projectId = projectId;
+    }
 
     public List<String> getMembersId() {
         return membersId;
@@ -39,8 +46,5 @@ public class Group {
         this.id = id;
     }
 
-    public Group(List<String> membersId, String projectId) {
-        this.membersId = membersId;
-        this.projectId = projectId;
-    }
+
 }

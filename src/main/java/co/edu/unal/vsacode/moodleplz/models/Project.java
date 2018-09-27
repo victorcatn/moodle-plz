@@ -3,6 +3,7 @@ package co.edu.unal.vsacode.moodleplz.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,18 +16,28 @@ public class Project {
     private Date startDate;
     private Date endDate;
 
-    private List<Skill> neededSkill;
-    private List<Knowledge> neededKnowledge;
+    private List<SkillScore> neededSkills = new ArrayList<>();
+    private List<KnowledgeScore> neededKnowledges = new ArrayList<>();
+
 
     private String assignedGroupId;
 
-    //private int staffNeeded; //TODO
-
-    public Project(String name, Date startDate, List<Skill> neededSkill, List<Knowledge> neededKnowledge) {
+    public Project(String name, Date startDate, List<SkillScore> neededSkills, List<KnowledgeScore> neededKnowledges) {
         this.startDate = startDate;
         this.name = name;
-        this.neededSkill = neededSkill;
-        this.neededKnowledge = neededKnowledge;
+        if(neededSkills != null){this.neededSkills = neededSkills;}
+        if(neededKnowledges != null){this.neededKnowledges = neededKnowledges;}
+    }
+
+    public Project() {
+    }
+
+    public String getAssignedGroupId() {
+        return assignedGroupId;
+    }
+
+    public void setAssignedGroupId(String assignedGroupId) {
+        this.assignedGroupId = assignedGroupId;
     }
 
     public String getId() {
@@ -45,28 +56,30 @@ public class Project {
         this.name = name;
     }
 
-    public List<Skill> getNeededSkill() {
-        return neededSkill;
+    public List<SkillScore> getNeededSkills() {
+        return neededSkills;
     }
 
-    public void setNeededSkill(List<Skill> neededSkill) {
-        this.neededSkill = neededSkill;
+    public void setNeededSkill(List<SkillScore> neededSkill) {
+        this.neededSkills = neededSkill;
     }
 
-    public List<Knowledge> getNeededKnowledge() {
-        return neededKnowledge;
+    public List<SkillScore> addSNeededSkill(SkillScore skillScore){
+        this.neededSkills.add(skillScore);
+        return neededSkills;
     }
 
-    public void setNeededKnowledge(List<Knowledge> neededKnowledge) {
-        this.neededKnowledge = neededKnowledge;
+    public List<KnowledgeScore> getNeededKnowledges() {
+        return neededKnowledges;
     }
 
-    public String getAssignedGroupId() {
-        return assignedGroupId;
+    public void setNeededKnowledge(List<KnowledgeScore> neededKnowledges) {
+        this.neededKnowledges = neededKnowledges;
     }
 
-    public void setAssignedGroupId(String assignedGroupId) {
-        this.assignedGroupId = assignedGroupId;
+    public List<KnowledgeScore> addSNeededKnowledge(KnowledgeScore knowledgeScore){
+        this.neededKnowledges.add(knowledgeScore);
+        return neededKnowledges;
     }
 
     public Date getEndDate() {
@@ -89,9 +102,9 @@ public class Project {
                 ", name='" + name + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", neededSkill=" + neededSkill +
-                ", neededKnowledge=" + neededKnowledge +
-                ", assignedGroup=" + assignedGroupId +
+                ", neededSkills=" + neededSkills +
+                ", neededKnowledges=" + neededKnowledges +
+                ", assignedGroupId='" + assignedGroupId + '\'' +
                 '}';
     }
 }

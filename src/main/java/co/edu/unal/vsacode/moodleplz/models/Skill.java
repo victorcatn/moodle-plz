@@ -31,4 +31,7 @@ public class Skill {
     public Skill(String name) {
         this.name = name;
     }
+
+    public Skill() {
+    }
 }
