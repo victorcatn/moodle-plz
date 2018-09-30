@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface StaffMemberRepository extends MongoRepository<StaffMember, String> {
     @Query("{document : ?0, password : ?1}")
     Optional<StaffMember> findByPasswordAndDocument(String staffMemberDocument, String staffMemberPassword);
+
+    StaffMember findByDocument(String document);
 }
