@@ -1,5 +1,6 @@
 package co.edu.unal.vsacode.moodleplz.controllers;
 import co.edu.unal.vsacode.moodleplz.models.StaffMember;
+import co.edu.unal.vsacode.moodleplz.services.EmailService;
 import co.edu.unal.vsacode.moodleplz.services.StaffMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,9 @@ public class StaffMemberController {
     @Autowired
     private StaffMemberService staffMemberService;
 
+    @Autowired
+    private EmailService emailService;
+
     @GetMapping
     List<StaffMember> getStaffMembers() {
         return staffMemberService.getStaffMembers();
@@ -25,16 +29,21 @@ public class StaffMemberController {
 
     @PostMapping
     StaffMember saveStaffMember(@RequestBody StaffMember staffMember) {
-        return staffMemberService.saveStaffMember(staffMember);
+        StaffMember staffMemberSaved = staffMemberService.saveStaffMember(staffMember);
+        emailService.registerStaffMemberProfile(staffMemberSaved);
+        return staffMemberSaved;
     }
 
     @PutMapping("/{id}")
     StaffMember editStaffMember(@RequestBody StaffMember newStaffMember, @PathVariable String id) {
-        return staffMemberService.updateStaffMember(newStaffMember, id);
+        StaffMember staffMemberUpdated = staffMemberService.updateStaffMember(newStaffMember, id);
+        emailService.updateStaffMemberProfile(staffMemberUpdated);
+        return staffMemberUpdated;
     }
 
     @DeleteMapping("/{id}")
     void deleteEmployee(@PathVariable String id) {
+        emailService.deleteStaffMemberProfile(staffMemberService.getStaffMember(id));
         staffMemberService.deleteStaffMember(id);
     }
 }

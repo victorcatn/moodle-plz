@@ -22,6 +22,10 @@ public class KnowledgeService {
         return knowledgeRepository.findById(id).orElse(null);
     }
 
+    public String getKnowledgeName(String id){
+        return getKnowledgeById(id).getName();
+    }
+
     public Knowledge saveKnowledge (Knowledge newKnowledge){
         return knowledgeRepository.save(newKnowledge);
     }
