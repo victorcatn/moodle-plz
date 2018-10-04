@@ -47,10 +47,9 @@
 			<version>2.0.0.RELEASE</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.session</groupId>
-			<artifactId>spring-session</artifactId>
-		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.session/spring-session -->
+
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
