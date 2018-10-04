@@ -15,6 +15,8 @@ public class SkillService {
     @Autowired
     private SkillRepository skillRepository;
 
+    @Autowired EmailService emailService;
+
     public List<Skill> getSkill(){
         return skillRepository.findAll();
     }
@@ -34,20 +36,25 @@ public class SkillService {
     }
 
     public Skill saveSkill(Skill newSkill){
-        return skillRepository.save(newSkill);
+        Skill skill = skillRepository.save(newSkill);
+        new Thread(()->emailService.newSkill(newSkill)).start();
+        return skill;
     }
 
     public Skill updateSkill(Skill newSkill){
         Skill skill = this.getSkillById(newSkill.getId());
 
-        if(skill != null){
-            BeanUtils.copyProperties(newSkill, skill);
-        }
+        if(skill != null) BeanUtils.copyProperties(newSkill, skill);
+
+        new Thread(()->emailService.updatedSkill(newSkill, skill)).start();
 
         return skillRepository.save(newSkill);
     }
 
     public void deleteSkill(String id){
-        skillRepository.delete(this.getSkillById(id));
+        if(skillRepository.findById(id).isPresent()) {
+            new Thread(()->emailService.deleteSkill(getSkillById(id))).start();
+            skillRepository.delete(this.getSkillById(id));
+        }
     }
 }

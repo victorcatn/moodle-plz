@@ -15,6 +15,8 @@ public class StaffMemberService {
     @Autowired
     private StaffMemberRepository repository;
 
+    @Autowired EmailService emailService;
+
     public List<StaffMember> getStaffMembers(){
         return repository.findAll();
     }
@@ -24,8 +26,10 @@ public class StaffMemberService {
         return result.orElse(null);
     }
 
-    public StaffMember saveStaffMember(StaffMember staffMember){
-        return repository.save(staffMember);
+    public StaffMember saveStaffMember(StaffMember newStaffMember){
+        StaffMember staffMember = repository.save(newStaffMember);
+        new Thread(()->emailService.registerStaffMemberProfile(staffMember)).start();
+        return staffMember;
     }
 
     public StaffMember updateStaffMember(StaffMember staffMember, String id){
@@ -33,13 +37,20 @@ public class StaffMemberService {
             return null;
         }
         else{
+            StaffMember oldStaffMember = getStaffMember(id);
             staffMember.setId(id);
+            StaffMember updatedStaffMember = repository.save(staffMember);
+            new Thread(()->emailService.updateStaffMemberProfile(updatedStaffMember, oldStaffMember)).start();
+            return updatedStaffMember;
         }
-        return repository.save(staffMember);
+
     }
 
     public void deleteStaffMember(String id){
-        repository.deleteById(id);
+        if(repository.findById(id).isPresent()) {
+            new Thread(()->emailService.deleteStaffMemberProfile(getStaffMember(id))).start();
+            repository.deleteById(id);
+        }
     }
 
 }

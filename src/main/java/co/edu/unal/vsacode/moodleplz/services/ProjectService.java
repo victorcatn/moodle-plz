@@ -13,6 +13,9 @@ public class ProjectService {
     @Autowired
     private ProjectRepository repository;
 
+    @Autowired
+    private EmailService emailService;
+
     public ProjectService(){
     }
 
@@ -55,10 +58,25 @@ public class ProjectService {
     }
 
     /**
+     * Update a existent project in the repository
+     * @param project the updated project
+     * @return the project that was saved
+     */
+    public Project updateProject(Project project){
+        Project oldProject = getProjectById(project.getId());
+        Project updatedProject = repository.save(project);
+        new Thread(()-> emailService.updatedProject(updatedProject, oldProject)).start();
+        return updatedProject;
+    }
+
+    /**
      * Delete of the project repository the provided project
      * @param id company´s project id
      */
     public void deleteProject(String id){
-        repository.deleteById(id);
+        if(repository.findById(id).isPresent()) {
+            new Thread(() -> emailService.deletedProject(getProjectById(id))).start();
+            repository.deleteById(id);
+        }
     }
 }

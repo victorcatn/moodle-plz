@@ -15,6 +15,9 @@ public class KnowledgeService {
     @Autowired
     private KnowledgeRepository knowledgeRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     public List<Knowledge> getKnowledge() {
         return knowledgeRepository.findAll();
     }
@@ -34,20 +37,23 @@ public class KnowledgeService {
     }
 
     public Knowledge saveKnowledge (Knowledge newKnowledge){
-        return knowledgeRepository.save(newKnowledge);
+        Knowledge knowledge= knowledgeRepository.save(newKnowledge);
+        new Thread(()->emailService.newKnowledge(knowledge)).start();
+        return knowledge;
     }
 
     public Knowledge updateKnowledge(Knowledge newKnowledge){
-        Knowledge knowledge = this.getKnowledgeById(newKnowledge.getId());
-
-        if (knowledge != null){
-            BeanUtils.copyProperties(newKnowledge, knowledge);
-        }
-
-        return knowledgeRepository.save(newKnowledge);
+        Knowledge oldknowledge = this.getKnowledgeById(newKnowledge.getId());
+        if (oldknowledge != null) BeanUtils.copyProperties(newKnowledge, oldknowledge);
+        Knowledge updatedKnowledge = knowledgeRepository.save(newKnowledge);
+        new Thread(()->emailService.updatedKnowledge(updatedKnowledge, oldknowledge)).start();
+        return updatedKnowledge;
     }
 
     public void deleteKnowledge(String id){
-        knowledgeRepository.delete(this.getKnowledgeById(id));
+        if(knowledgeRepository.findById(id).isPresent()) {
+            new Thread(()-> emailService.deleteKnowledge(getKnowledgeById(id))).start();
+            knowledgeRepository.delete(getKnowledgeById(id));
+        }
     }
 }
