@@ -37,7 +37,7 @@ public class SkillService {
 
     public Skill saveSkill(Skill newSkill){
         Skill skill = skillRepository.save(newSkill);
-        new Thread(()->emailService.newSkill(newSkill)).start();
+        emailService.newSkill(newSkill);
         return skill;
     }
 
@@ -46,14 +46,14 @@ public class SkillService {
 
         if(skill != null) BeanUtils.copyProperties(newSkill, skill);
 
-        new Thread(()->emailService.updatedSkill(newSkill, skill)).start();
+        emailService.updatedSkill(newSkill, skill);
 
         return skillRepository.save(newSkill);
     }
 
     public void deleteSkill(String id){
         if(skillRepository.findById(id).isPresent()) {
-            new Thread(()->emailService.deleteSkill(getSkillById(id))).start();
+            emailService.deleteSkill(getSkillById(id));
             skillRepository.delete(this.getSkillById(id));
         }
     }

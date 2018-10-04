@@ -1,5 +1,7 @@
 package co.edu.unal.vsacode.moodleplz.models;
 
+import java.util.Objects;
+
 public class SkillScore {
     private String skillId;
     private int score;
@@ -28,11 +30,26 @@ public class SkillScore {
     public SkillScore() {
     }
 
+
     @Override
     public String toString() {
         return "SkillScore{" +
                 "skillId='" + skillId + '\'' +
                 ", score=" + score +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SkillScore that = (SkillScore) o;
+        return score == that.score &&
+                Objects.equals(skillId, that.skillId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(skillId, score);
     }
 }

@@ -28,7 +28,7 @@ public class StaffMemberService {
 
     public StaffMember saveStaffMember(StaffMember newStaffMember){
         StaffMember staffMember = repository.save(newStaffMember);
-        new Thread(()->emailService.registerStaffMemberProfile(staffMember)).start();
+        emailService.registerStaffMemberProfile(staffMember);
         return staffMember;
     }
 
@@ -40,7 +40,7 @@ public class StaffMemberService {
             StaffMember oldStaffMember = getStaffMember(id);
             staffMember.setId(id);
             StaffMember updatedStaffMember = repository.save(staffMember);
-            new Thread(()->emailService.updateStaffMemberProfile(updatedStaffMember, oldStaffMember)).start();
+            emailService.updateStaffMemberProfile(updatedStaffMember, oldStaffMember);
             return updatedStaffMember;
         }
 
@@ -48,7 +48,7 @@ public class StaffMemberService {
 
     public void deleteStaffMember(String id){
         if(repository.findById(id).isPresent()) {
-            new Thread(()->emailService.deleteStaffMemberProfile(getStaffMember(id))).start();
+            emailService.deleteStaffMemberProfile(getStaffMember(id));
             repository.deleteById(id);
         }
     }

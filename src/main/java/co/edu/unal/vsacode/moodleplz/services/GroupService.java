@@ -73,11 +73,11 @@ public class GroupService {
         Group savedGroup = repository.save(group);
         Project selectedProject = projectService.getProjectById(savedGroup.getProjectId());
         if(selectedProject.getAssignedGroupId() != null){
-            new Thread(()-> emailService.changesAssigendGroup(getGroup(selectedProject.getAssignedGroupId()), selectedProject));
+            emailService.changesAssigendGroup(getGroup(selectedProject.getAssignedGroupId()), selectedProject);
         }
         selectedProject.setAssignedGroupId(savedGroup.getId());
         projectService.saveProject(selectedProject);
-        new Thread(() -> emailService.createGroupNotification(savedGroup)).start();
+        emailService.createGroupNotification(savedGroup);
         return savedGroup;
 
     }
@@ -90,9 +90,7 @@ public class GroupService {
             Group oldGroup = getGroup(id);
             newGroup.setId(id);
             Group updatedGroup = repository.save(newGroup);
-
-            new Thread(() -> emailService.updateGroupNotification(updatedGroup, oldGroup)).start();
-
+            emailService.updateGroupNotification(updatedGroup, oldGroup);
             return updatedGroup;
         }
 
@@ -100,7 +98,7 @@ public class GroupService {
 
     public void deleteGroup(String id){
         if(repository.findById(id).isPresent()) {
-            new Thread(() -> emailService.deleteGroupNotification(getGroup(id))).start();
+            emailService.deleteGroupNotification(getGroup(id));
             repository.deleteById(id);
         }
     }

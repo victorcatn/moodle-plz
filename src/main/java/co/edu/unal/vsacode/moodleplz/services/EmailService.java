@@ -5,6 +5,7 @@ import co.edu.unal.vsacode.moodleplz.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
@@ -44,6 +45,7 @@ public class EmailService {
      * Sends an email to all members of the new group
      * @param newGroup the group created with all the members
      */
+    @Async
     public void createGroupNotification(Group newGroup){
         String message = mailTemplate.newGroupTemplate(newGroup);
         String subject = "[Moodle plz] New group created";
@@ -64,32 +66,33 @@ public class EmailService {
      */
     public void updateGroupNotification(Group updatedGroup, Group oldGroup){
 
-        List<String> idMembersLeft = new ArrayList<>();
-        List<String> idMembersAdd = new ArrayList<>();
-        List<String> idMembersInform = new ArrayList<>();
+        if(!updatedGroup.equals(oldGroup)) {
+            List<String> idMembersLeft = new ArrayList<>();
+            List<String> idMembersAdd = new ArrayList<>();
+            List<String> idMembersInform = new ArrayList<>();
 
-        for(String idmemberOldGroup: oldGroup.getMembersId()){
-            if(updatedGroup.getMembersId().contains(idmemberOldGroup)){
-                idMembersInform.add(idmemberOldGroup);
+            for (String idmemberOldGroup : oldGroup.getMembersId()) {
+                if (updatedGroup.getMembersId().contains(idmemberOldGroup)) {
+                    idMembersInform.add(idmemberOldGroup);
+                } else {
+                    idMembersLeft.add(idmemberOldGroup);
+                }
             }
-            else{
-                idMembersLeft.add(idmemberOldGroup);
+            for (String idMemberUpdatedGroup : updatedGroup.getMembersId()) {
+                if (!(oldGroup.getMembersId().contains(idMemberUpdatedGroup))) {
+                    idMembersAdd.add(idMemberUpdatedGroup);
+                }
             }
-        }
-        for(String idMemberUpdatedGroup: updatedGroup.getMembersId()){
-            if(!(oldGroup.getMembersId().contains(idMemberUpdatedGroup))){
-                idMembersAdd.add(idMemberUpdatedGroup);
-            }
-        }
 
-        if(!idMembersLeft.isEmpty()){
-            updatedGroupNotificationLeft(idMembersLeft, updatedGroup);
-        }
-        if(!idMembersAdd.isEmpty()){
-            updatedGroupNotificationAdd(idMembersAdd, updatedGroup);
-        }
-        if(!idMembersInform.isEmpty()){
-            updatedGroupNotificationInform(idMembersInform, updatedGroup);
+            if (!idMembersLeft.isEmpty()) {
+                updatedGroupNotificationLeft(idMembersLeft, updatedGroup);
+            }
+            if (!idMembersAdd.isEmpty()) {
+                updatedGroupNotificationAdd(idMembersAdd, updatedGroup);
+            }
+            if (!idMembersInform.isEmpty()) {
+                updatedGroupNotificationInform(idMembersInform, updatedGroup);
+            }
         }
 
     }
@@ -194,17 +197,19 @@ public class EmailService {
      * @param oldSkill the unmodified skill
      */
     public void updatedSkill(Skill newSkill, Skill oldSkill){
-        String message = mailTemplate.updateSkillTemplate(newSkill, oldSkill);
-        String subject = "[Moodle plz] Skill '" + oldSkill.getId() +"' updated";
+        if(!oldSkill.equals(newSkill)) {
+            String message = mailTemplate.updateSkillTemplate(newSkill, oldSkill);
+            String subject = "[Moodle plz] Skill '" + oldSkill.getId() + "' updated";
 
-        ArrayList<String> to = new ArrayList<>();
+            ArrayList<String> to = new ArrayList<>();
 
-        List<StaffMember> staffMembers = staffMemberService.getStaffMembers();
-        staffMembers.forEach(staffMember -> to.add(staffMember.getEmail()));
-        try {
-            sendEmail(to, subject, message);
-        } catch (Exception e) {
-            e.printStackTrace();
+            List<StaffMember> staffMembers = staffMemberService.getStaffMembers();
+            staffMembers.forEach(staffMember -> to.add(staffMember.getEmail()));
+            try {
+                sendEmail(to, subject, message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -258,18 +263,20 @@ public class EmailService {
      * @param oldKnowledge the unmodified knowledge
      */
     public void updatedKnowledge(Knowledge newKnowledge, Knowledge oldKnowledge){
-        String message = mailTemplate.updateKnowledgeTemplate(newKnowledge, oldKnowledge);
-        String subject = "[Moodle plz] knowledge '" + oldKnowledge.getId() +"' updated";
+        if(!oldKnowledge.equals(newKnowledge)) {
+            String message = mailTemplate.updateKnowledgeTemplate(newKnowledge, oldKnowledge);
+            String subject = "[Moodle plz] knowledge '" + oldKnowledge.getId() + "' updated";
 
-        ArrayList<String> to = new ArrayList<>();
+            ArrayList<String> to = new ArrayList<>();
 
-        List<StaffMember> staffMembers = staffMemberService.getStaffMembers();
-        staffMembers.forEach(staffMember -> to.add(staffMember.getEmail()));
+            List<StaffMember> staffMembers = staffMemberService.getStaffMembers();
+            staffMembers.forEach(staffMember -> to.add(staffMember.getEmail()));
 
-        try {
-            sendEmail(to, subject, message);
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                sendEmail(to, subject, message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -304,16 +311,18 @@ public class EmailService {
      * @param oldProject the project without modifies
      */
     public void updatedProject(Project newProject, Project oldProject){
-        String message = mailTemplate.updatedProjectTemplate(newProject, oldProject);
+        if(!oldProject.equals(newProject)) {
+            String message = mailTemplate.updatedProjectTemplate(newProject, oldProject);
 
-        String subject = "[Moodle plz] project '" + oldProject.getId() + "' updated";
+            String subject = "[Moodle plz] project '" + oldProject.getId() + "' updated";
 
-        ArrayList<String> to = getEmailbyId(groupService.getGroup(newProject.getAssignedGroupId()).getMembersId());
+            ArrayList<String> to = getEmailbyId(groupService.getGroup(newProject.getAssignedGroupId()).getMembersId());
 
-        try {
-            sendEmail(to, subject, message);
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                sendEmail(to, subject, message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -446,8 +455,7 @@ public class EmailService {
         helper.setTo(to.toArray(new String[0]));
         helper.setText(text, true);
         helper.setSubject(subject);
-
-        emailSender.send(message);
+        new Thread(() -> emailSender.send(message)).start();
     }
 
     /**

@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
+import java.util.Objects;
 
 @Document
 public class Group {
@@ -13,6 +14,8 @@ public class Group {
     private List<String> membersId;
     private String projectId;
     //private String name; TODO
+
+
 
     public Group() {
     }
@@ -46,7 +49,6 @@ public class Group {
         this.id = id;
     }
 
-
     @Override
     public String toString() {
         return "Group{" +
@@ -54,5 +56,21 @@ public class Group {
                 ", membersId=" + membersId +
                 ", projectId='" + projectId + '\'' +
                 '}';
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Group group = (Group) o;
+        return Objects.equals(id, group.id) &&
+                Objects.equals(membersId, group.membersId) &&
+                Objects.equals(projectId, group.projectId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, membersId, projectId);
     }
 }

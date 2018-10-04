@@ -117,17 +117,37 @@ public class StaffMember {
         this.isHumanResourcesManager = isHumanResourcesManager;
     }
 
-    public boolean equals(StaffMember o) {
 
-        return  o.getId().equals(id)
-                && getName().equals(name)
-                && o.getLastName().equals(lastName)
-                && o.getDocument().equals(document)
-                && o.getEmail().equals(email)
-                && o.getPassword().equals(password)
-                && o.getKnowledges().equals(knowledges)
-                && o.getSkills().equals(skills)
-                && o.getIsHumanResourcesManager()==isHumanResourcesManager;
+
+    @Override
+    public String toString() {
+        return "StaffMember{" +
+                "id='" + id + '\'' +
+                ", document='" + document + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", isHumanResourcesManager=" + isHumanResourcesManager +
+                ", skills=" + skills +
+                ", knowledges=" + knowledges +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StaffMember that = (StaffMember) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(document, that.document) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(password, that.password) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(lastName, that.lastName) &&
+                Objects.equals(isHumanResourcesManager, that.isHumanResourcesManager) &&
+                Objects.equals(skills, that.skills) &&
+                Objects.equals(knowledges, that.knowledges);
     }
 
     @Override

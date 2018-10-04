@@ -65,7 +65,7 @@ public class ProjectService {
     public Project updateProject(Project project){
         Project oldProject = getProjectById(project.getId());
         Project updatedProject = repository.save(project);
-        new Thread(()-> emailService.updatedProject(updatedProject, oldProject)).start();
+        emailService.updatedProject(updatedProject, oldProject);
         return updatedProject;
     }
 
@@ -75,7 +75,7 @@ public class ProjectService {
      */
     public void deleteProject(String id){
         if(repository.findById(id).isPresent()) {
-            new Thread(() -> emailService.deletedProject(getProjectById(id))).start();
+            emailService.deletedProject(getProjectById(id));
             repository.deleteById(id);
         }
     }
