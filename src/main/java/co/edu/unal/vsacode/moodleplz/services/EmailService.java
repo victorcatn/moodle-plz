@@ -1,11 +1,13 @@
 package co.edu.unal.vsacode.moodleplz.services;
 
+import co.edu.unal.vsacode.moodleplz.MailTemplate;
 import co.edu.unal.vsacode.moodleplz.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,9 @@ public class EmailService {
     @Autowired
     private KnowledgeService knowledgeService;
 
+    @Autowired
+    private MailTemplate mailTemplate;
+
     public EmailService(){
 
     }
@@ -40,14 +45,15 @@ public class EmailService {
      * @param newGroup the group created with all the members
      */
     public void createGroupNotification(Group newGroup){
-        String message = "You have been added to a new group:\n"
-                + newGroup.getId() + "\n"
-                + "Assigned project: " + newGroup.getProjectId();
+        String message = mailTemplate.newGroupTemplate(newGroup);
         String subject = "[Moodle plz] New group created";
         ArrayList<String> to = getEmailbyId(newGroup.getMembersId());
 
-        sendEmail(to, subject, message);
-
+        try {
+            sendEmail(to, subject, message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -77,16 +83,13 @@ public class EmailService {
         }
 
         if(!idMembersLeft.isEmpty()){
-            updatedGroupNotificationLeft(idMembersLeft, oldGroup);
-            if(!idMembersInform.isEmpty()) {
-                updatedGroupNotificationInformLeft(idMembersInform, idMembersLeft, oldGroup);
-            }
+            updatedGroupNotificationLeft(idMembersLeft, updatedGroup);
         }
         if(!idMembersAdd.isEmpty()){
-            updatedGroupNotificationAdd(idMembersAdd, oldGroup);
-            if(!idMembersInform.isEmpty()) {
-                updatedGroupNotificationInformAdd(idMembersInform, idMembersAdd, oldGroup);
-            }
+            updatedGroupNotificationAdd(idMembersAdd, updatedGroup);
+        }
+        if(!idMembersInform.isEmpty()){
+            updatedGroupNotificationInform(idMembersInform, updatedGroup);
         }
 
     }
@@ -96,11 +99,16 @@ public class EmailService {
      * @param deletedGroup the deleted group
      */
     public void deleteGroupNotification(Group deletedGroup){
-        String message = "The group "+ deletedGroup.getId()+" have been deleted";
+        String message = mailTemplate.deletedGroupTemplate(deletedGroup);
         String subject = "[Moodle plz] Group deleted";
         ArrayList<String> to = getEmailbyId(deletedGroup.getMembersId());
 
-        sendEmail(to, subject, message);
+        try {
+            sendEmail(to, subject, message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -109,11 +117,14 @@ public class EmailService {
      * @param group the group of the members
      */
     private void updatedGroupNotificationLeft(List<String> toLeft, Group group){
-        String messageLeft = "You have left the group :\n"+
-                group.getId();
-        String subjectLeft = "[Moodle plz] Group '"+ group.getId()+"' changes";;
-
-        sendEmail(getEmailbyId(toLeft), subjectLeft, messageLeft);
+        String messageLeft = mailTemplate.leftMembersTemplate(group);
+        String subjectLeft = "[Moodle plz] Group '"+ group.getId()+"' changes";
+        ArrayList<String> to = getEmailbyId(toLeft);
+        try {
+            sendEmail(to, subjectLeft, messageLeft);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -122,55 +133,37 @@ public class EmailService {
      * @param group the group of the members
      */
     private void updatedGroupNotificationAdd(List<String> toAdded, Group group){
-        String messageAdded = "You have been added to a group:\n"+
-                group.getId();
-        String subjectAdded = "[Moodle plz] Group '"+group.getId()+"' changes";;
+        String messageAdded = mailTemplate.addedMembersTemplate(group);
+        String subjectAdded = "[Moodle plz] Group '"+group.getId()+"' changes";
+        ArrayList<String> to = getEmailbyId(toAdded);
 
-        sendEmail(getEmailbyId(toAdded), subjectAdded, messageAdded);
-    }
-
-    /**
-     * Sends an email notification to the members that wasn´t modified informing the members that left the
-     * group
-     * @param toInform id members to inform
-     * @param toLeft id members that leave the group
-     * @param group the members group
-     */
-    private void updatedGroupNotificationInformLeft(List<String> toInform, List<String> toLeft, Group group){
-
-        String messageInform = "The fallows staff members have left the group "+group.getId()+":";
-
-        for(String idMember : toLeft){
-            StaffMember staffMember = staffMemberService.getStaffMember(idMember);
-            messageInform += "\nDocument: "+ staffMember.getDocument() +
-                    " Name: " + staffMember.getName() + " " + staffMember.getLastName();
+        try {
+            sendEmail(to, subjectAdded, messageAdded);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        String subjectInform = "[Moodle plz] Group '"+group.getId()+"' changes";
-
-        sendEmail(getEmailbyId(toInform), subjectInform, messageInform);
     }
 
+
     /**
-     * Sends an email notification to the members that wasn´t modified informing the members that was added to the
-     * group
+     * Sends an email notification to the members that wasn´t modified showing the list of members
      * @param toInform id members to inform
-     * @param toAdd id members of the added members in the group
      * @param group the members group
      */
-    private void updatedGroupNotificationInformAdd(List<String> toInform, List<String> toAdd, Group group){
+    private void updatedGroupNotificationInform(List<String> toInform, Group group){
 
-        String messageInform = "The fallows staff members have been added to the group "+group.getId()+":";
-
-        for(String idMember : toAdd){
-            StaffMember staffMember = staffMemberService.getStaffMember(idMember);
-            messageInform += "\nDocument: "+ staffMember.getDocument() +
-                    " Name: " + staffMember.getName() + " " + staffMember.getLastName();
-        }
+        String messageInform = mailTemplate.informMembersTemplate(group);
 
         String subjectInform = "[Moodle plz] Group '"+group.getId()+"' changes";
+        ArrayList<String> to = getEmailbyId(toInform);
 
-        sendEmail(getEmailbyId(toInform), subjectInform, messageInform);
+        try {
+            sendEmail(to, subjectInform, messageInform);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -181,18 +174,18 @@ public class EmailService {
      * @param newSkill the new skill
      */
     public void newSkill(Skill newSkill){
-        String message = "New skill have been added to be chosen:\n"
-                +"Skill id: " + newSkill.getId() + "\n"
-                +"Skill name: "+ newSkill.getName();
+        String message = mailTemplate.newSkillTemplate(newSkill);
         String subject = "[Moodle plz] New skill added to database";
         ArrayList<String> to = new ArrayList<>();
 
         List<StaffMember> staffMembers = staffMemberService.getStaffMembers();
         staffMembers.forEach(staffMember -> to.add(staffMember.getEmail()));
 
-
-
-        sendEmail(to, subject, message);
+        try {
+            sendEmail(to, subject, message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -201,16 +194,18 @@ public class EmailService {
      * @param oldSkill the unmodified skill
      */
     public void updatedSkill(Skill newSkill, Skill oldSkill){
-        String message = "A skill have been updated:\n"
-                +"old skill name: "+ oldSkill.getName() + " to " + "new skill name: "+ newSkill.getName();
+        String message = mailTemplate.updateSkillTemplate(newSkill, oldSkill);
         String subject = "[Moodle plz] Skill '" + oldSkill.getId() +"' updated";
 
         ArrayList<String> to = new ArrayList<>();
 
         List<StaffMember> staffMembers = staffMemberService.getStaffMembers();
         staffMembers.forEach(staffMember -> to.add(staffMember.getEmail()));
-
-        sendEmail(to, subject, message);
+        try {
+            sendEmail(to, subject, message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -218,9 +213,7 @@ public class EmailService {
      * @param deletedSkill the deleted skill
      */
     public void deleteSkill(Skill deletedSkill){
-        String message = "A skill have been deleted:\n"
-                +"Skill id: " + deletedSkill.getId() + "\n"
-                +"Skill name: "+ deletedSkill.getName();
+        String message = mailTemplate.deletSkillTemplate(deletedSkill);
 
         String subject = "[Moodle plz] Skill '" + deletedSkill.getId() +"' deleted";
 
@@ -228,30 +221,35 @@ public class EmailService {
 
         List<StaffMember> staffMembers = staffMemberService.getStaffMembers();
         staffMembers.forEach(staffMember -> to.add(staffMember.getEmail()));
+        try {
+            sendEmail(to, subject, message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        sendEmail(to, subject, message);
     }
 
 
-    //-----------------------------------------------skill notification-----------------------------------------------//
+    //---------------------------------------------knowledge notification---------------------------------------------//
 
     /**
      * Inform to all staff members that a knowledge was added in the database
      * @param newKnowledge the new knowledge
      */
     public void newKnowledge(Knowledge newKnowledge){
-        String message = "New knowledge have been added to be chosen:\n"
-                +"knowledge id: " + newKnowledge.getId() + "\n"
-                +"knowledge name: "+ newKnowledge.getName();
+        String message = mailTemplate.newKnowledgeTemplate(newKnowledge);
         String subject = "[Moodle plz] New knowledge added to database";
         ArrayList<String> to = new ArrayList<>();
 
         List<StaffMember> staffMembers = staffMemberService.getStaffMembers();
         staffMembers.forEach(staffMember -> to.add(staffMember.getEmail()));
 
+        try {
+            sendEmail(to, subject, message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-
-        sendEmail(to, subject, message);
     }
 
     /**
@@ -260,8 +258,7 @@ public class EmailService {
      * @param oldKnowledge the unmodified knowledge
      */
     public void updatedKnowledge(Knowledge newKnowledge, Knowledge oldKnowledge){
-        String message = "A knowledge have been updated:\n"
-                +"old knowledge name: "+ oldKnowledge.getName() + " to " + "new knowledge name: "+ newKnowledge.getName();
+        String message = mailTemplate.updateKnowledgeTemplate(newKnowledge, oldKnowledge);
         String subject = "[Moodle plz] knowledge '" + oldKnowledge.getId() +"' updated";
 
         ArrayList<String> to = new ArrayList<>();
@@ -269,7 +266,11 @@ public class EmailService {
         List<StaffMember> staffMembers = staffMemberService.getStaffMembers();
         staffMembers.forEach(staffMember -> to.add(staffMember.getEmail()));
 
-        sendEmail(to, subject, message);
+        try {
+            sendEmail(to, subject, message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -277,9 +278,7 @@ public class EmailService {
      * @param deletedKnowledge the deleted knowledge
      */
     public void deleteKnowledge(Knowledge deletedKnowledge){
-        String message = "A knowledge have been deleted:\n"
-                +"knowledge id: " + deletedKnowledge.getId() + "\n"
-                +"knowledge name: "+ deletedKnowledge.getName();
+        String message = mailTemplate.deleteKnowledgeTemplate(deletedKnowledge);
 
         String subject = "[Moodle plz] knowledge '" + deletedKnowledge.getId() +"' deleted";
 
@@ -288,7 +287,12 @@ public class EmailService {
         List<StaffMember> staffMembers = staffMemberService.getStaffMembers();
         staffMembers.forEach(staffMember -> to.add(staffMember.getEmail()));
 
-        sendEmail(to, subject, message);
+        try {
+            sendEmail(to, subject, message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -300,15 +304,17 @@ public class EmailService {
      * @param oldProject the project without modifies
      */
     public void updatedProject(Project newProject, Project oldProject){
-        String message = "A project have been updated:\n \n"
-                + "- - - - old project - - - -\n" + toStringProject(oldProject) + "\n" + "\n"
-                + "- - - - new project - - - -\n" + toStringProject(newProject);
+        String message = mailTemplate.updatedProjectTemplate(newProject, oldProject);
 
         String subject = "[Moodle plz] project '" + oldProject.getId() + "' updated";
 
         ArrayList<String> to = getEmailbyId(groupService.getGroup(newProject.getAssignedGroupId()).getMembersId());
 
-        sendEmail(to, subject, message);
+        try {
+            sendEmail(to, subject, message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -318,15 +324,18 @@ public class EmailService {
     public void deletedProject(Project deletedProject){
             Group assignedGroup = groupService.getGroup(deletedProject.getAssignedGroupId());
             if(assignedGroup != null) {
-                String message = "A project have been deleted:\n"
-                        + "project id: " + deletedProject.getId() + "\n"
-                        + "project name: " + deletedProject.getName();
+                String message = mailTemplate.deleteProjectTemplate(deletedProject);
 
                 String subject = "[Moodle plz] project '" + deletedProject.getId() + "' deleted";
 
                 ArrayList<String> to = getEmailbyId(assignedGroup.getMembersId());
 
-                sendEmail(to, subject, message);
+                try {
+                    sendEmail(to, subject, message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
 
 
@@ -339,13 +348,16 @@ public class EmailService {
      */
     public void changesAssigendGroup(Group oldGroup, Project project){
 
-        String message =  "Your group was removed of the project: \n"
-                + project.getId();
+        String message =  mailTemplate.changesAssigendGroupTemplate(project);
 
         String subjectLeft = "[Moodle plz] Project '"+ project.getId()+"' changes";
         ArrayList<String> to = getEmailbyId(oldGroup.getMembersId());
 
-        sendEmail(to, subjectLeft, message);
+        try {
+            sendEmail(to, subjectLeft, message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -358,33 +370,41 @@ public class EmailService {
      * @param staffMember the new staff member
      */
     public void registerStaffMemberProfile(StaffMember staffMember){
-        String message = "Your profile was register:\n"
-                +"Id: " + staffMember.getId() + "\n"
-                +"Username: "+ staffMember.getDocument()+ "\n"
-                +"Password: "+staffMember.getPassword();
+
+        String message = mailTemplate.newStaffMemberTemplate(staffMember);
 
         String subject = "[Moodle plz] Profile saved";
         ArrayList<String> to = new ArrayList<>();
         to.add(staffMember.getEmail());
 
-        sendEmail(to, subject, message);
+        try {
+            sendEmail(to, subject, message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
      * Sends an email that notify the profile update
-     * @param staffMember the updated staff member
+     * @param newProfile the updated staff member
+     * @param oldProfile the old profile of the staff member
      */
-    public void updateStaffMemberProfile(StaffMember staffMember){
-        String message = "Your profile was updated:\n"
-                +"Id: " + staffMember.getId() + "\n"
-                +"Username: "+ staffMember.getDocument()+ "\n"
-                +"Password: "+staffMember.getPassword();
+    public void updateStaffMemberProfile(StaffMember newProfile, StaffMember oldProfile){
+        if(!newProfile.equals(oldProfile)) {
+            String message = mailTemplate.updatedStaffMemberTemplate(newProfile, oldProfile);
 
-        String subject = "[Moodle plz] Profile updated";
-        ArrayList<String> to = new ArrayList<>();
-        to.add(staffMember.getEmail());
+            String subject = "[Moodle plz] Profile updated";
+            ArrayList<String> to = new ArrayList<>();
+            to.add(newProfile.getEmail());
 
-        sendEmail(to, subject, message);
+            try {
+                sendEmail(to, subject, message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     /**
@@ -392,13 +412,18 @@ public class EmailService {
      * @param staffMember the fired staff member
      */
     public void deleteStaffMemberProfile(StaffMember staffMember){
-        String message = "You are fired";
+        String message = mailTemplate.deleteStaffMemberTemplate(staffMember);
 
         String subject = "[Moodle plz] Profile disabled";
         ArrayList<String> to = new ArrayList<>();
         to.add(staffMember.getEmail());
 
-        sendEmail(to, subject, message);
+        try {
+            sendEmail(to, subject, message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -411,15 +436,18 @@ public class EmailService {
      * @param subject the subject of the email
      * @param text the messge of the email
      */
-    private void sendEmail(List<String> to , String subject, String text){
+    private void sendEmail(List<String> to , String subject, String text) throws Exception{
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to.toArray(new String[0]));
-        message.setFrom("moodleplz-noreply");
-        message.setSubject(subject);
-        message.setText(text);
+        MimeMessage message = emailSender.createMimeMessage();
+
+        // Enable the multipart flag!
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setTo(to.toArray(new String[0]));
+        helper.setText(text, true);
+        helper.setSubject(subject);
+
         emailSender.send(message);
-
     }
 
     /**

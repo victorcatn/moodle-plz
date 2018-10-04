@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Document
 public class StaffMember {
@@ -116,4 +117,21 @@ public class StaffMember {
         this.isHumanResourcesManager = isHumanResourcesManager;
     }
 
+    public boolean equals(StaffMember o) {
+
+        return  o.getId().equals(id)
+                && getName().equals(name)
+                && o.getLastName().equals(lastName)
+                && o.getDocument().equals(document)
+                && o.getEmail().equals(email)
+                && o.getPassword().equals(password)
+                && o.getKnowledges().equals(knowledges)
+                && o.getSkills().equals(skills)
+                && o.getIsHumanResourcesManager()==isHumanResourcesManager;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, document, email, password, name, lastName, isHumanResourcesManager, skills, knowledges);
+    }
 }

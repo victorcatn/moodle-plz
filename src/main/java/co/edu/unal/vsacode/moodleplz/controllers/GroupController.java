@@ -44,13 +44,18 @@ public class GroupController {
     @PutMapping("/{id}")
     Group editGroup(@RequestBody Group newGroup, @PathVariable String id) {
         Group oldGroup = groupService.getGroup(id);
+        newGroup = groupService.updateGroup(newGroup, id);
         emailService.updateGroupNotification(newGroup, oldGroup);
-        return groupService.updateGroup(newGroup, id);
+        return newGroup;
     }
 
     @DeleteMapping("/{id}")
     void deleteGroup(@PathVariable String id) {
-        emailService.deleteGroupNotification(groupService.getGroup(id));
+        //try {
+            emailService.deleteGroupNotification(groupService.getGroup(id));
+        //} catch (Exception e) {
+          //  e.printStackTrace();
+        //}
         groupService.deleteGroup(id);
     }
 }

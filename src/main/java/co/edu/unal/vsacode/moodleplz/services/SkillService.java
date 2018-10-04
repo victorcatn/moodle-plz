@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SkillService {
@@ -23,7 +24,13 @@ public class SkillService {
     }
 
     public String getSkillName(String id){
-        return getSkillById(id).getName();
+        Optional<Skill> optionalSkill =  skillRepository.findById(id);
+        if(optionalSkill.isPresent()){
+            Skill skill= optionalSkill.get();
+            return skill.getName();
+        }else{
+            return "Skill not found";
+        }
     }
 
     public Skill saveSkill(Skill newSkill){

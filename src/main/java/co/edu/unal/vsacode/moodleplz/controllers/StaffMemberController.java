@@ -36,8 +36,9 @@ public class StaffMemberController {
 
     @PutMapping("/{id}")
     StaffMember editStaffMember(@RequestBody StaffMember newStaffMember, @PathVariable String id) {
+        StaffMember oldStaffMember = staffMemberService.getStaffMember(id);
         StaffMember staffMemberUpdated = staffMemberService.updateStaffMember(newStaffMember, id);
-        emailService.updateStaffMemberProfile(staffMemberUpdated);
+        emailService.updateStaffMemberProfile(staffMemberUpdated, oldStaffMember);
         return staffMemberUpdated;
     }
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class KnowledgeService {
@@ -23,7 +24,13 @@ public class KnowledgeService {
     }
 
     public String getKnowledgeName(String id){
-        return getKnowledgeById(id).getName();
+        Optional<Knowledge> optionalKnowledge =  knowledgeRepository.findById(id);
+        if(optionalKnowledge.isPresent()){
+            Knowledge knowledge= optionalKnowledge.get();
+            return knowledge.getName();
+        }else{
+            return "knowledge not found";
+        }
     }
 
     public Knowledge saveKnowledge (Knowledge newKnowledge){
