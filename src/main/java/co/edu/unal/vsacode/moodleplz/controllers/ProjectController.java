@@ -1,6 +1,7 @@
 package co.edu.unal.vsacode.moodleplz.controllers;
 
 import co.edu.unal.vsacode.moodleplz.models.Project;
+import co.edu.unal.vsacode.moodleplz.services.EmailService;
 import co.edu.unal.vsacode.moodleplz.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +15,16 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private EmailService emailService;
+
     /**
      * Do a request in order to show all projects
      * @return list of projects
      */
     @GetMapping
     List<Project> getProject() {
-        return projectService.getProject();
+        return projectService.getProjects();
     }
 
     /**
@@ -29,8 +33,8 @@ public class ProjectController {
      * @return a project list with all project with the code provided
      */
     @GetMapping("/{id}")
-    Optional<Project> getProjectById(@PathVariable String id){
-        return projectService.getProject(id);
+    Project getProjectById(@PathVariable String id){
+        return projectService.getProjectById(id);
     }
 
     /**
@@ -64,6 +68,7 @@ public class ProjectController {
     @PutMapping("/{id}")
     Project editProject(@RequestBody Project newProject, @PathVariable String id) {
         newProject.setId(id);
+        emailService.updatedProject(newProject, projectService.getProjectById(id));
         return projectService.saveProject(newProject);
     }
 
@@ -73,6 +78,7 @@ public class ProjectController {
      */
     @DeleteMapping("/{id}")
     void deleteProject(@PathVariable String id) {
+        emailService.deletedProject(projectService.getProjectById(id));
         projectService.deleteProject(id);
     }
 }

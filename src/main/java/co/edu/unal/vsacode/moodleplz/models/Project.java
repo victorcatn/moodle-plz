@@ -19,7 +19,8 @@ public class Project {
     private List<SkillScore> neededSkills = new ArrayList<>();
     private List<KnowledgeScore> neededKnowledges = new ArrayList<>();
 
-    //private int staffNeeded; //TODO
+
+    private String assignedGroupId;
 
     public Project(String name, Date startDate, List<SkillScore> neededSkills, List<KnowledgeScore> neededKnowledges) {
         this.startDate = startDate;
@@ -29,6 +30,14 @@ public class Project {
     }
 
     public Project() {
+    }
+
+    public String getAssignedGroupId() {
+        return assignedGroupId;
+    }
+
+    public void setAssignedGroupId(String assignedGroupId) {
+        this.assignedGroupId = assignedGroupId;
     }
 
     public String getId() {
@@ -88,13 +97,12 @@ public class Project {
 
     @Override
     public String toString() {
-        return "Project{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", neededSkills=" + neededSkills +
-                ", neededKnowledges=" + neededKnowledges +
-                '}';
+        return  "id='" + id + '\n' +
+                "name='" + name + '\n' +
+                "startDate=" + startDate + '\n' +
+                "endDate=" + endDate + '\n' +
+                "neededSkills=" + neededSkills.toString() + '\n' +
+                "neededKnowledges=" + neededKnowledges.toString() + '\n' +
+                "assignedGroupId='" + assignedGroupId + '\'';
     }
 }

@@ -21,7 +21,7 @@ public class ProjectService {
      * the repository
      * @return a list project
      */
-    public List<Project> getProject(){
+    public List<Project> getProjects(){
         return repository.findAll();
     }
 
@@ -30,9 +30,11 @@ public class ProjectService {
      * @param id generated id
      * @return Optional project
      */
-    public Optional<Project> getProject(String id) {
-        return repository.findById(id);
+    public Project getProjectById(String id) {
+        Optional<Project> result = repository.findById(id);
+        return result.orElse(null);
     }
+
 
     /**
      * Search and show the projects with the code project provided
