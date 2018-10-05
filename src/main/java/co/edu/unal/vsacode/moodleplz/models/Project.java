@@ -23,18 +23,19 @@ public class Project {
 
     private String assignedGroupId;
 
-    public Project(String name, Date startDate, List<SkillScore> neededSkills, List<KnowledgeScore> neededKnowledges) {
-        this.startDate = startDate;
-        this.name = name;
-        if (neededSkills != null) {
-            this.neededSkills = neededSkills;
-        }
-        if (neededKnowledges != null) {
-            this.neededKnowledges = neededKnowledges;
-        }
-    }
+
 
     public Project() {
+    }
+
+    public Project(String id, String name, Date startDate, Date endDate, List<SkillScore> neededSkills, List<KnowledgeScore> neededKnowledges, String assignedGroupId) {
+        this.id = id;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.neededSkills = neededSkills;
+        this.neededKnowledges = neededKnowledges;
+        this.assignedGroupId = assignedGroupId;
     }
 
     public String getAssignedGroupId() {

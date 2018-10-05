@@ -23,16 +23,21 @@ public class StaffMember {
     private List<SkillScore> skills = new ArrayList<>();
     private List<KnowledgeScore> knowledges = new ArrayList<>();
 
-    public StaffMember(String document, String email, String password, String name, String lastName, Boolean isHumanResourcesManager) {
+
+
+    public StaffMember() {
+    }
+
+    public StaffMember(String id, String document, String email, String password, String name, String lastName, Boolean isHumanResourcesManager, List<SkillScore> skills, List<KnowledgeScore> knowledges) {
+        this.id = id;
         this.document = document;
         this.email = email;
         this.password = password;
         this.name = name;
         this.lastName = lastName;
         this.isHumanResourcesManager = isHumanResourcesManager;
-    }
-
-    public StaffMember() {
+        this.skills = skills;
+        this.knowledges = knowledges;
     }
 
     public String getDocument() {
