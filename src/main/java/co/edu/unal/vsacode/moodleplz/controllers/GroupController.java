@@ -1,5 +1,6 @@
 package co.edu.unal.vsacode.moodleplz.controllers;
 
+import co.edu.unal.vsacode.moodleplz.models.Algorithm;
 import co.edu.unal.vsacode.moodleplz.models.Group;
 import co.edu.unal.vsacode.moodleplz.models.Project;
 import co.edu.unal.vsacode.moodleplz.services.GroupService;
@@ -26,7 +27,7 @@ public class GroupController {
     }
 
     @PostMapping("/generate")
-    Group generateGroup(@RequestBody Project project) {
+    Algorithm generateGroup(@RequestBody Project project) {
         return groupService.generateGroup(project);
     }
 

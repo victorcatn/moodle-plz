@@ -19,6 +19,7 @@ public class StaffMember {
     private String lastName;
 
     private Boolean isHumanResourcesManager; //TODO: separate classes for HRM and staff member
+    private Boolean available;
 
     private List<SkillScore> skills = new ArrayList<>();
     private List<KnowledgeScore> knowledges = new ArrayList<>();
@@ -28,7 +29,7 @@ public class StaffMember {
     public StaffMember() {
     }
 
-    public StaffMember(String id, String document, String email, String password, String name, String lastName, Boolean isHumanResourcesManager, List<SkillScore> skills, List<KnowledgeScore> knowledges) {
+    public StaffMember(String id, String document, String email, String password, String name, String lastName, Boolean isHumanResourcesManager, Boolean available,List<SkillScore> skills, List<KnowledgeScore> knowledges) {
         this.id = id;
         this.document = document;
         this.email = email;
@@ -36,6 +37,7 @@ public class StaffMember {
         this.name = name;
         this.lastName = lastName;
         this.isHumanResourcesManager = isHumanResourcesManager;
+        this.available = available;
         this.skills = skills;
         this.knowledges = knowledges;
     }
@@ -86,6 +88,22 @@ public class StaffMember {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Boolean getHumanResourcesManager() {
+        return isHumanResourcesManager;
+    }
+
+    public void setHumanResourcesManager(Boolean humanResourcesManager) {
+        isHumanResourcesManager = humanResourcesManager;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
     }
 
     public List<SkillScore> getSkills() {

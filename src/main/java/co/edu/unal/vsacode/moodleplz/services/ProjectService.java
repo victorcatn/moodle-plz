@@ -16,6 +16,9 @@ public class ProjectService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private GroupService groupService;
+
     public ProjectService(){
     }
 
@@ -75,7 +78,11 @@ public class ProjectService {
      */
     public void deleteProject(String id){
         if(repository.findById(id).isPresent()) {
+            Project project = repository.findById(id).get();
             emailService.deletedProject(getProjectById(id));
+            if(project.getAssignedGroupId() != null){
+                groupService.deleteGroup(project.getAssignedGroupId());
+            }
             repository.deleteById(id);
         }
     }

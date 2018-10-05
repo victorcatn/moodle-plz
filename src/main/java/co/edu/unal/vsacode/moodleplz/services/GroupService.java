@@ -1,13 +1,14 @@
 package co.edu.unal.vsacode.moodleplz.services;
 
-import co.edu.unal.vsacode.moodleplz.models.*;
+import co.edu.unal.vsacode.moodleplz.models.Algorithm;
+import co.edu.unal.vsacode.moodleplz.models.Group;
+import co.edu.unal.vsacode.moodleplz.models.Project;
 import co.edu.unal.vsacode.moodleplz.repositories.GroupRepository;
 import co.edu.unal.vsacode.moodleplz.repositories.StaffMemberDAL;
 import co.edu.unal.vsacode.moodleplz.repositories.StaffMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,9 @@ public class GroupService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private AlgorithmService algorithmService;
+
     public List<Group> getGroups(){
         return repository.findAll();
     }
@@ -42,38 +46,18 @@ public class GroupService {
     }
 
 
-    public Group generateGroup(Project project){
+    public Algorithm generateGroup(Project project){
 
-        List<String> members = new ArrayList<>();
+        Algorithm algorithm = algorithmService.generateAlgorithm(staffMemberRepository.findAll(), project);
 
-        for(SkillScore s : project.getNeededSkills()){
-            StaffMember member = staffMemberDAL.findBySatisfiedSkill(s);
-
-            if(member != null){
-                members.add(member.getId());
-            }
-
-        }
-
-        for(KnowledgeScore k : project.getNeededKnowledges()){
-            StaffMember member = staffMemberDAL.findBySatisfiedKnowledge(k);
-            if(member != null){
-                members.add(member.getId());
-            }
-        }
-
-        Group group = new Group( members, project.getId()); //TODO give a list of members to choose the wanted
-
-
-
-        return group;
+        return algorithm;
     }
 
     public Group createGroup(Group group){
         Group savedGroup = repository.save(group);
         Project selectedProject = projectService.getProjectById(savedGroup.getProjectId());
         if(selectedProject.getAssignedGroupId() != null){
-            emailService.changesAssigendGroup(getGroup(selectedProject.getAssignedGroupId()), selectedProject);
+            deleteGroup(selectedProject.getAssignedGroupId());
         }
         selectedProject.setAssignedGroupId(savedGroup.getId());
         projectService.saveProject(selectedProject);
@@ -99,6 +83,9 @@ public class GroupService {
     public void deleteGroup(String id){
         if(repository.findById(id).isPresent()) {
             emailService.deleteGroupNotification(getGroup(id));
+            Project project = projectService.getProjectById(getGroup(id).getProjectId());
+            project.setAssignedGroupId(null);
+            projectService.saveProject(project);
             repository.deleteById(id);
         }
     }

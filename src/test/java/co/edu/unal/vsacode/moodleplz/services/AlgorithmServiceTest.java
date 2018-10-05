@@ -1,28 +1,28 @@
-package co.edu.unal.vsacode.moodleplz.models;
+package co.edu.unal.vsacode.moodleplz.services;
 
+import co.edu.unal.vsacode.moodleplz.models.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class AlgorithmTest {
+class AlgorithmServiceTest {
 
-    @Test
-    public void searchPerfectMatch() {
+    AlgorithmService algorithmService = new AlgorithmService();
+
+    @BeforeEach
+    void setUp() {
+    }
+
+    @AfterEach
+    void tearDown() {
     }
 
     @Test
-    public void searchSuggestedMembers() {
-    }
-
-    @Test
-    public void searchOthersMembers() {
-    }
-
-    @Test
-    public void searchNonSuggestedMembers() {
-
+    void generateAlgorithm() {
         List<StaffMember> staffMembers = new ArrayList<>();
 
         /**--------------------------------------------------Test 1---------------------------------------------------*/
@@ -53,6 +53,7 @@ public class AlgorithmTest {
                 "Paola Andrea",
                 "Castañeda Osorno",
                 false,
+                true,
                 new ArrayList<SkillScore>(Arrays.asList(
                         new SkillScore("5ba07565291ec12a00df060d", 10)
                 )),
@@ -74,6 +75,7 @@ public class AlgorithmTest {
                 "Paola Andrea",
                 "Castañeda Osorno",
                 false,
+                true,
                 new ArrayList<SkillScore>(Arrays.asList(
                         new SkillScore("5ba07565291ec12a00df060d", 55),
                         new SkillScore("5b96f1b0291ec123846beef4", 55),
@@ -90,16 +92,21 @@ public class AlgorithmTest {
         staffMembers.add(staffMember2);
 
 
-        Algorithm algorithm = new Algorithm(staffMembers, project1);
+        Algorithm algorithm = algorithmService.generateAlgorithm(staffMembers, project1);
         //TODO assertEquals
-        System.out.println(algorithm.getMemberWeightMap().toString());
+
+        System.out.println(algorithm.getSuggestedStaffMember() + " suggested");
+        System.out.println(algorithm.getOthers() + " others");
+        System.out.println(algorithm.getNonSuggestedStaffMember() + " non suggested");
+        System.out.println("");
+
 
 
         /**--------------------------------------------------Test 2---------------------------------------------------*/
 
 
         /*StaffMember3 cumple la condicion del nodo 1 y del nodo 2 pero en muy poca medida
-        * deberia estar dentro de otros*/
+         * deberia estar dentro de otros*/
         StaffMember staffMember3 = new StaffMember(
                 "000000000000000000000003",
                 "1152464229",
@@ -108,6 +115,7 @@ public class AlgorithmTest {
                 "Paola Andrea",
                 "Castañeda Osorno",
                 false,
+                true,
                 new ArrayList<SkillScore>(Arrays.asList(
                         new SkillScore("5ba07565291ec12a00df060d", 50)
                 )),
@@ -118,7 +126,7 @@ public class AlgorithmTest {
         staffMembers.add(staffMember3);
 
         /*the staffMember4 must have don´t suggested
-        * no cumple las condiciones del nodo 1, 2 ni 3*/
+         * no cumple las condiciones del nodo 1, 2 ni 3*/
         StaffMember staffMember4 = new StaffMember(
                 "000000000000000000000004",
                 "1152464229",
@@ -127,6 +135,7 @@ public class AlgorithmTest {
                 "Paola Andrea",
                 "Castañeda Osorno",
                 false,
+                true,
                 new ArrayList<SkillScore>(Arrays.asList(
                         new SkillScore("5ba07565291ec12a00df060a", 50)
                 )),
@@ -136,10 +145,10 @@ public class AlgorithmTest {
         );
         staffMembers.add(staffMember4);
 
-        algorithm = new Algorithm(staffMembers, project1);
+        algorithm = algorithmService.generateAlgorithm(staffMembers, project1);
         //TODO assertEquals
-        System.out.println(algorithm.getMemberWeightMap().toString());
-
-
+        System.out.println(algorithm.getSuggestedStaffMember() + " suggested 2");
+        System.out.println(algorithm.getOthers() + " others 2");
+        System.out.println(algorithm.getNonSuggestedStaffMember() + " non suggested 2");
     }
 }
