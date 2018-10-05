@@ -1,0 +1,32 @@
+stages:
+  - build
+  - package
+  - deploy
+
+maven-build:
+  image: maven:3-jdk-8
+  stage: build
+  script:
+    - "mvn package"
+  artifacts:
+    paths:
+      - ./target/spring-boot-app.jar
+  tags:
+    - pae-docker
+
+docker-build:
+  stage: package
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker build -t registry.gitlab.com/vdcatanoc/moodle-plz .
+    - docker push registry.gitlab.com/vdcatanoc/moodle-plz
+  tags:
+    - pae
+
+deploy-testing:
+  stage: deploy
+  script:
+    - docker stop  moodle-plz || true
+    - docker run -d --rm --name moodle-plz -p 8087:8087 --network="host" registry.gitlab.com/vdcatanoc/moodle-plz
+  tags:
+    - pae
