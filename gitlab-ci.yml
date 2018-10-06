@@ -27,6 +27,6 @@ deploy-testing:
   stage: deploy
   script:
     - docker stop  moodle-plz || true
-    - docker run -d --rm --name moodle-plz -p 8087:8087 --network="host" registry.gitlab.com/vdcatanoc/moodle-plz
+    - docker run -d --rm --name moodle-plz -p 8087:8087 --network=pae-bridge registry.gitlab.com/vdcatanoc/moodle-plz
   tags:
     - pae
