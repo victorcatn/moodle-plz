@@ -12,7 +12,7 @@ maven-build:
     paths:
       - ./target/spring-boot-app.jar
   tags:
-    - pae-docker
+    - shell
 
 docker-build:
   stage: package
@@ -21,7 +21,7 @@ docker-build:
     - docker build -t registry.gitlab.com/vdcatanoc/moodle-plz .
     - docker push registry.gitlab.com/vdcatanoc/moodle-plz
   tags:
-    - pae
+    - shell
 
 deploy-testing:
   stage: deploy
@@ -29,4 +29,4 @@ deploy-testing:
     - docker stop  moodle-plz || true
     - docker run -d --rm --name moodle-plz -p 8087:8087 --network=pae-bridge registry.gitlab.com/vdcatanoc/moodle-plz
   tags:
-    - pae
+    - shell
