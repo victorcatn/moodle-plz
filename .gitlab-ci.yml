@@ -23,12 +23,12 @@ docker-build:
   tags:
     - shell
 
-deploy-testing:
+test-deploy:
   stage: deploy
-  only:
+  except:
     - master
   script:
-    - docker stop  moodle-plz || true
-    - docker run -d --rm --name moodle-plz -p 8087:8087 --network=pae-bridge registry.gitlab.com/vdcatanoc/moodle-plz
+    - docker run -d --rm --name moodle-plz-test registry.gitlab.com/vdcatanoc/moodle-plz
+    - docker stop  moodle-plz-test || true
   tags:
     - shell
