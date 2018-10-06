@@ -25,6 +25,8 @@ docker-build:
 
 deploy-testing:
   stage: deploy
+  only:
+    - master
   script:
     - docker stop  moodle-plz || true
     - docker run -d --rm --name moodle-plz -p 8087:8087 --network=pae-bridge registry.gitlab.com/vdcatanoc/moodle-plz
