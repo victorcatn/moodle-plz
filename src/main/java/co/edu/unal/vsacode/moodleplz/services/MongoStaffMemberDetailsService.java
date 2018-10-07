@@ -28,6 +28,8 @@ public class MongoStaffMemberDetailsService implements UserDetailsService {
 
         List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("user"));
 
+        //return new User(staffMember.getDocument(), staffMember.getPassword(), authorities);
+
         return User.withDefaultPasswordEncoder().username(staffMember.getDocument()).password(staffMember.getPassword()).roles("USER").build();
 //        return User.withUsername(staffMember.getDocument()).password("{noop}user").roles("USER").build();
     }
