@@ -234,7 +234,8 @@ public class AlgorithmService {
     private void fillList(List<StaffMemberWeight> staffMemberWeights, List<StaffMember> staffMembers){
         for(StaffMemberWeight staffMemberWeight : staffMemberWeights){
             for(StaffMember staffMember : staffMembers){
-                if(staffMember.getId().equals(staffMemberWeight.getIdStaffMember()) && staffMember.getAvailable()){
+                if(staffMember.getId().equals(staffMemberWeight.getIdStaffMember()) && staffMember.getAvailable()
+                        && !staffMember.getIsHumanResourcesManager()){
                     if(staffMemberWeight.getWeight()<=0.20){
                         algorithm.addNonSuggestedStaffMember(staffMember);
                     }
