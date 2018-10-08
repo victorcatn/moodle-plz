@@ -22,7 +22,7 @@ public class MongoStaffMemberDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String document){
         if(repository.count() == 0) {
-            repository.save(new StaffMember("123","admin@example.com","123","admin","",true));
+            repository.save(new StaffMember("0000000000","springappt.noreply@gmail.com","Admin","Admin","human resources",true, false));
         }
         StaffMember staffMember = repository.findByDocument(document);
         if(staffMember == null){

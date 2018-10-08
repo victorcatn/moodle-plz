@@ -29,6 +29,8 @@ public class StaffMember {
     public StaffMember() {
     }
 
+
+
     public StaffMember(String id, String document, String email, String password, String name, String lastName, Boolean isHumanResourcesManager, Boolean available,List<SkillScore> skills, List<KnowledgeScore> knowledges) {
         this.id = id;
         this.document = document;
@@ -40,6 +42,16 @@ public class StaffMember {
         this.available = available;
         this.skills = skills;
         this.knowledges = knowledges;
+    }
+
+    public StaffMember(String document, String email, String password, String name, String lastName, Boolean isHumanResourcesManager, Boolean available) {
+        this.document = document;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.lastName = lastName;
+        this.isHumanResourcesManager = isHumanResourcesManager;
+        this.available = available;
     }
 
     public String getDocument() {
