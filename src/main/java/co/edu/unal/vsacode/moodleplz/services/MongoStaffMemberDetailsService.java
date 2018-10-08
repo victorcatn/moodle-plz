@@ -21,6 +21,9 @@ public class MongoStaffMemberDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String document){
+        if(repository.count() == 0) {
+            repository.save(new StaffMember("123","admin@example.com","123","admin","",true));
+        }
         StaffMember staffMember = repository.findByDocument(document);
         if(staffMember == null){
             throw new UsernameNotFoundException("User not found");
