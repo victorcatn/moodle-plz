@@ -48,10 +48,7 @@ public class GroupService {
 
 
     public Algorithm generateGroup(Project project){
-
-        Algorithm algorithm = algorithmService.generateAlgorithm(staffMemberRepository.findAll(), project);
-
-        return algorithm;
+        return algorithmService.generateAlgorithm(staffMemberRepository.findAll(), project);
     }
 
     public Group createGroup(Group group){
@@ -75,9 +72,11 @@ public class GroupService {
         else{
             Group oldGroup = getGroup(id);
             changeAvailableTrue(oldGroup.getMembersId());
+
             newGroup.setId(id);
             Group updatedGroup = repository.save(newGroup);
             changeAvailableFalse(updatedGroup.getMembersId());
+
             emailService.updateGroupNotification(updatedGroup, oldGroup);
             return updatedGroup;
         }
