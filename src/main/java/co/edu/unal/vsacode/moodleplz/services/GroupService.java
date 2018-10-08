@@ -3,6 +3,7 @@ package co.edu.unal.vsacode.moodleplz.services;
 import co.edu.unal.vsacode.moodleplz.models.Algorithm;
 import co.edu.unal.vsacode.moodleplz.models.Group;
 import co.edu.unal.vsacode.moodleplz.models.Project;
+import co.edu.unal.vsacode.moodleplz.models.StaffMember;
 import co.edu.unal.vsacode.moodleplz.repositories.GroupRepository;
 import co.edu.unal.vsacode.moodleplz.repositories.StaffMemberDAL;
 import co.edu.unal.vsacode.moodleplz.repositories.StaffMemberRepository;
@@ -55,6 +56,7 @@ public class GroupService {
 
     public Group createGroup(Group group){
         Group savedGroup = repository.save(group);
+        changeAvailableFalse(savedGroup.getMembersId());
         Project selectedProject = projectService.getProjectById(savedGroup.getProjectId());
         if(selectedProject.getAssignedGroupId() != null){
             deleteGroup(selectedProject.getAssignedGroupId());
@@ -72,8 +74,10 @@ public class GroupService {
         }
         else{
             Group oldGroup = getGroup(id);
+            changeAvailableTrue(oldGroup.getMembersId());
             newGroup.setId(id);
             Group updatedGroup = repository.save(newGroup);
+            changeAvailableFalse(updatedGroup.getMembersId());
             emailService.updateGroupNotification(updatedGroup, oldGroup);
             return updatedGroup;
         }
@@ -82,11 +86,27 @@ public class GroupService {
 
     public void deleteGroup(String id){
         if(repository.findById(id).isPresent()) {
+            changeAvailableTrue(getGroup(id).getMembersId());
             emailService.deleteGroupNotification(getGroup(id));
             Project project = projectService.getProjectById(getGroup(id).getProjectId());
             project.setAssignedGroupId(null);
             projectService.saveProject(project);
             repository.deleteById(id);
+        }
+    }
+
+    private void changeAvailableTrue(List<String> idMembers){
+        for(String idMember: idMembers){
+            StaffMember staffMember = staffMemberService.getStaffMember(idMember);
+            staffMember.setAvailable(true);
+            staffMemberRepository.save(staffMember);
+        }
+    }
+    private void changeAvailableFalse(List<String> idMembers){
+        for(String idMember: idMembers){
+            StaffMember staffMember = staffMemberService.getStaffMember(idMember);
+            staffMember.setAvailable(false);
+            staffMemberRepository.save(staffMember);
         }
     }
 }

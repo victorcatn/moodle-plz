@@ -239,7 +239,7 @@ public class AlgorithmService {
                     if(staffMemberWeight.getWeight()<=0.20){
                         algorithm.addNonSuggestedStaffMember(staffMember);
                     }
-                    if(staffMemberWeight.getWeight()>0.20 && staffMemberWeight.getWeight()<=0.50){
+                    else if(staffMemberWeight.getWeight()>0.20 && staffMemberWeight.getWeight()<=0.50){
                         algorithm.addOthers(staffMember);
                     }
                     else{
