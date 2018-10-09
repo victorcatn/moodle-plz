@@ -5,7 +5,6 @@ import co.edu.unal.vsacode.moodleplz.models.Group;
 import co.edu.unal.vsacode.moodleplz.models.Project;
 import co.edu.unal.vsacode.moodleplz.models.StaffMember;
 import co.edu.unal.vsacode.moodleplz.repositories.GroupRepository;
-import co.edu.unal.vsacode.moodleplz.repositories.StaffMemberDAL;
 import co.edu.unal.vsacode.moodleplz.repositories.StaffMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +20,6 @@ public class GroupService {
 
     @Autowired
     private StaffMemberRepository staffMemberRepository;
-
-    @Autowired
-    private StaffMemberDAL staffMemberDAL;
 
     @Autowired
     private StaffMemberService staffMemberService;
