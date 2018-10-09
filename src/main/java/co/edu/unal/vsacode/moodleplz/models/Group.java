@@ -13,7 +13,6 @@ public class Group {
     private String id;
     private List<String> membersId;
     private String projectId;
-    //private String name; TODO
 
 
 
