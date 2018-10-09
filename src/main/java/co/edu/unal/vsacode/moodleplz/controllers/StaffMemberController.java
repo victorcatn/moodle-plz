@@ -27,6 +27,11 @@ public class StaffMemberController {
         return staffMemberService.getStaffMember(id);
     }
 
+    @GetMapping("/bydocument/{document}")
+    StaffMember getStaffMemberByDocument(@PathVariable String document) {
+        return staffMemberService.getStaffMemberByDocument(document);
+    }
+
     @PostMapping
     StaffMember saveStaffMember(@RequestBody StaffMember staffMember) {
         StaffMember staffMemberSaved = staffMemberService.saveStaffMember(staffMember);

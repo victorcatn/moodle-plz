@@ -24,6 +24,11 @@ public class StaffMemberService {
         return result.orElse(null);
     }
 
+    public StaffMember getStaffMemberByDocument(String document) {
+        StaffMember result = repository.findByDocument(document);
+        return result;
+    }
+
     public StaffMember saveStaffMember(StaffMember staffMember){
         return repository.save(staffMember);
     }
