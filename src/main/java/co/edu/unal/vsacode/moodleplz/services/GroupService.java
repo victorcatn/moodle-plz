@@ -93,15 +93,19 @@ public class GroupService {
     private void changeAvailableTrue(List<String> idMembers){
         for(String idMember: idMembers){
             StaffMember staffMember = staffMemberService.getStaffMember(idMember);
-            staffMember.setAvailable(true);
-            staffMemberRepository.save(staffMember);
+            if(staffMember != null) {
+                staffMember.setAvailable(true);
+                staffMemberRepository.save(staffMember);
+            }
         }
     }
     private void changeAvailableFalse(List<String> idMembers){
         for(String idMember: idMembers){
             StaffMember staffMember = staffMemberService.getStaffMember(idMember);
-            staffMember.setAvailable(false);
-            staffMemberRepository.save(staffMember);
+            if(staffMember != null) {
+                staffMember.setAvailable(false);
+                staffMemberRepository.save(staffMember);
+            }
         }
     }
 }

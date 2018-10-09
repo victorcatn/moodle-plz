@@ -1,6 +1,8 @@
 package co.edu.unal.vsacode.moodleplz.services;
 
+import co.edu.unal.vsacode.moodleplz.models.Group;
 import co.edu.unal.vsacode.moodleplz.models.StaffMember;
+import co.edu.unal.vsacode.moodleplz.repositories.GroupRepository;
 import co.edu.unal.vsacode.moodleplz.repositories.StaffMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,38 +15,39 @@ import java.util.Optional;
 public class StaffMemberService {
 
     @Autowired
-    private StaffMemberRepository repository;
+    private StaffMemberRepository staffMemberRepository;
+
+    private GroupRepository groupRepository;
 
     @Autowired EmailService emailService;
 
     public List<StaffMember> getStaffMembers(){
-        return repository.findAll();
+        return staffMemberRepository.findAll();
     }
 
     public StaffMember getStaffMember(String id) {
-        Optional<StaffMember> result = repository.findById(id);
+        Optional<StaffMember> result = staffMemberRepository.findById(id);
         return result.orElse(null);
     }
 
     public StaffMember getStaffMemberByDocument(String document) {
-        StaffMember result = repository.findByDocument(document);
-        return result;
+        return staffMemberRepository.findByDocument(document);
     }
 
     public StaffMember saveStaffMember(StaffMember newStaffMember){
-        StaffMember staffMember = repository.save(newStaffMember);
+        StaffMember staffMember = staffMemberRepository.save(newStaffMember);
         emailService.registerStaffMemberProfile(staffMember);
         return staffMember;
     }
 
     public StaffMember updateStaffMember(StaffMember staffMember, String id){
-        if(!repository.findById(id).isPresent()){
+        if(!staffMemberRepository.findById(id).isPresent()){
             return null;
         }
         else{
             StaffMember oldStaffMember = getStaffMember(id);
             staffMember.setId(id);
-            StaffMember updatedStaffMember = repository.save(staffMember);
+            StaffMember updatedStaffMember = staffMemberRepository.save(staffMember);
             emailService.updateStaffMemberProfile(updatedStaffMember, oldStaffMember);
             return updatedStaffMember;
         }
@@ -52,9 +55,18 @@ public class StaffMemberService {
     }
 
     public void deleteStaffMember(String id){
-        if(repository.findById(id).isPresent()) {
+        if(staffMemberRepository.findById(id).isPresent()) {
             emailService.deleteStaffMemberProfile(getStaffMember(id));
-            repository.deleteById(id);
+            staffMemberRepository.deleteById(id);
+            for(Group group:groupRepository.findAll()){
+                if(group.getMembersId().contains(id)){
+                    List<String> idmembers = group.getMembersId();
+                    idmembers.remove(id);
+                    group.setMembersId(idmembers);
+                    groupRepository.save(group);
+                }
+            }
+
         }
     }
 
