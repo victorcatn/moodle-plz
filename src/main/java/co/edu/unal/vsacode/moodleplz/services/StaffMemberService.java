@@ -26,6 +26,11 @@ public class StaffMemberService {
         return result.orElse(null);
     }
 
+    public StaffMember getStaffMemberByDocument(String document) {
+        StaffMember result = repository.findByDocument(document);
+        return result;
+    }
+
     public StaffMember saveStaffMember(StaffMember newStaffMember){
         StaffMember staffMember = repository.save(newStaffMember);
         emailService.registerStaffMemberProfile(staffMember);
